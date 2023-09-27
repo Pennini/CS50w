@@ -13,7 +13,7 @@ a:hover{
     text-align: center;
     padding: 5px;
 }
-.entry {
+.entry {    
     display: block;
     margin: auto;
     width: 50%;
@@ -22,8 +22,9 @@ a:hover{
     border: gray;
 }
 .button {
+    display: block;
     border-radius: 10px;
     border: gray;
     color: darkslategray;
-}
+    margin: auto;
 }
