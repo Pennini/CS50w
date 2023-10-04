@@ -1,0 +1,18 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search Results
+{% endblock title %}
+
+{% block body %}
+    <ul>
+        {% if entry %}
+            {% for en in entry %}
+                <li><a href="{% url "encyclopedia:entry" en %}">{{ en }}</a></li>
+            {% endfor %}
+        {% else %}
+            <p>Enter some valid input</p>
+        {% endif %}
+    </ul>
+{% endblock body %}
+
