@@ -6,7 +6,7 @@
 
 {% block body %}
     {% if entry %}
-        <p>{{ entry }}</p>
+        <p>{{ entry|safe }}</p>
         <a href="{% url 'encyclopedia:edit' entry_name %}">Edit</a>
     {% else %}
         <p>404</p>

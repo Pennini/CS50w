@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 import random
+from markdown2 import Markdown
 
 from . import util
 
@@ -11,12 +12,13 @@ def index(request):
 
 
 def entry_page(request, entry:str):
+    mk = Markdown()
     entries = [en.upper() for en in util.list_entries()]
     if entry.upper() in entries:
         return render(
             request,
             "encyclopedia/entry.html",
-            {"entry_name": entry, "entry": util.get_entry(entry)},
+            {"entry_name": entry, "entry": mk.convert(util.get_entry(entry))},
         )
     else:
         return render(
