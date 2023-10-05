@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <div style="container">
+    <div class="container">
         <h1>All Pages</h1>
-        <ul>
+        <ul class="list-group">
             {% for entry in entries %}
-                <li><a href="{% url 'encyclopedia:entry' entry %}">{{ entry }}</a></li>
+                <li class="list-group-item" style="background-color: #f0f0f0; list-style: none;"><a href="{% url 'encyclopedia:entry' entry %}">{{ entry }}</a></li>
             {% endfor %}
         </ul>
     </div>
