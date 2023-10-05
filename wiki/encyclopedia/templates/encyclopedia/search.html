@@ -5,6 +5,7 @@
 {% endblock title %}
 
 {% block body %}
+<div class="container">
     <ul>
         {% if entry %}
             {% for en in entry %}
@@ -15,5 +16,6 @@
             <p>Enter some valid input</p>
         {% endif %}
     </ul>
+</div>
 {% endblock body %}
 

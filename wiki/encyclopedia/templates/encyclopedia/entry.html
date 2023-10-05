@@ -5,11 +5,13 @@
 {% endblock %}
 
 {% block body %}
-    {% if entry %}
-        <p>{{ entry|safe }}</p>
-        <a href="{% url 'encyclopedia:edit' entry_name %}">Edit</a>
-    {% else %}
-        <p>404</p>
-        <p>Page not found</p>
-    {% endif %}
+    <div class="container">
+        {% if entry %}
+            <p>{{ entry|safe }}</p>
+            <a href="{% url 'encyclopedia:edit' entry_name %}">Edit</a>
+        {% else %}
+            <p>404</p>
+            <p>Page not found</p>
+        {% endif %}
+    </div>
 {% endblock  %}
