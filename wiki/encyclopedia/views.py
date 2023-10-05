@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+import random
 
 from . import util
 
@@ -88,3 +89,9 @@ def edit(request, entry:str):
                 "error_message": "Markdown text can't be blank"
             })
     return render(request, "encyclopedia/edit.html", {"entry": entry, "entry_content": entry_content})
+
+
+def random_page(request):
+    entries = util.list_entries()
+    entry = random.choice(entries)
+    return HttpResponseRedirect(reverse("encyclopedia:entry", args=[entry]))
