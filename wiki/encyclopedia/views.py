@@ -18,10 +18,12 @@ def entry_page(request, entry:str):
             {"entry_name": entry, "entry": util.get_entry(entry)},
         )
     else:
-        return render(request, "encyclopedia/error.html", {
-            "error": 404,
-            "error_message": f"The title '{entry}' does not exist."
-        })
+        return render(
+            request,
+            "encyclopedia/error.html",
+            {"error": 404, "error_message": f"The title '{entry}' does not exist."},
+        )
+
 
 def search(request):
     entry = request.GET.get("q")
@@ -34,10 +36,11 @@ def search(request):
             if entry.upper() in en.upper():
                 result.append(en)
     if not result:
-        return render(request, "encyclopedia/error.html", {
-            "error": 404,
-            "error_message": f"The title '{entry}' wasn't found."
-        })
+        return render(
+            request,
+            "encyclopedia/error.html",
+            {"error": 404, "error_message": f"The title '{entry}' wasn't found."},
+        )
     return render(request, "encyclopedia/search.html", {"entry": result})
 
 
@@ -52,13 +55,36 @@ def create(request):
                 util.save_entry(title, text)
                 return HttpResponseRedirect(reverse("encyclopedia:index"))
             else:
-                return render(request, "encyclopedia/error.html", {
-                "error": 400,
-                "error_message": "Must provide title and Markdown text."
-            })
+                return render(
+                    request,
+                    "encyclopedia/error.html",
+                    {
+                        "error": 400,
+                        "error_message": "Must provide title and Markdown text.",
+                    },
+                )
+        else:
+            return render(
+                request,
+                "encyclopedia/error.html",
+                {
+                    "error": 400,
+                    "error_message": f"The title '{exists[0]}' already exists",
+                },
+            )
+    return render(request, "encyclopedia/create.html")
+
+
+def edit(request, entry:str):
+    entry_content = util.get_entry(entry)
+    if request.method == "POST":
+        new_content = request.POST.get("textMarkdown").encode("utf-8")
+        if new_content:
+            util.save_entry(entry, new_content)
+            return HttpResponseRedirect(reverse("encyclopedia:entry", args=[entry]))
         else:
             return render(request, "encyclopedia/error.html", {
-            "error": 400,
-            "error_message": f"The title '{exists[0]}' already exists"
-        })
-    return render(request, "encyclopedia/create.html")
+                "error": 400,
+                "error_message": "Markdown text can't be blank"
+            })
+    return render(request, "encyclopedia/edit.html", {"entry": entry, "entry_content": entry_content})
