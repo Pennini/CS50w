@@ -11,6 +11,7 @@
                 <li><a href="{% url "encyclopedia:entry" en %}">{{ en }}</a></li>
             {% endfor %}
         {% else %}
+            <h1>404</h1>
             <p>Enter some valid input</p>
         {% endif %}
     </ul>
