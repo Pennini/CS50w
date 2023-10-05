@@ -13,19 +13,18 @@ def index(request):
 
 def entry_page(request, entry:str):
     mk = Markdown()
-    entries = [en.upper() for en in util.list_entries()]
-    if entry.upper() in entries:
-        return render(
-            request,
-            "encyclopedia/entry.html",
-            {"entry_name": entry, "entry": mk.convert(util.get_entry(entry))},
-        )
-    else:
-        return render(
-            request,
-            "encyclopedia/error.html",
-            {"error": 404, "error_message": f"The title '{entry}' does not exist."},
-        )
+    for en in util.list_entries():
+        if entry.upper() == en.upper():
+            return render(
+                request,
+                "encyclopedia/entry.html",
+                {"entry_name": en, "entry": mk.convert(util.get_entry(en))},
+            )
+    return render(
+        request,
+        "encyclopedia/error.html",
+        {"error": 404, "error_message": f"The title '{entry}' does not exist."},
+    )
 
 
 def search(request):
