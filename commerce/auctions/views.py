@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import User
 
-
+@login_required(redirect_field_name='login')
 def index(request):
     return render(request, "auctions/index.html")
 
@@ -30,7 +31,7 @@ def login_view(request):
     else:
         return render(request, "auctions/login.html")
 
-
+@login_required(redirect_field_name='login')
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
