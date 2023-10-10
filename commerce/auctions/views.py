@@ -128,7 +128,7 @@ def listing(request, auction):
                 "error": 400,
                 "error_message": f"Your bid does not fall within the established parameters. Do not use commas for values ​and separate the decimal with a period"
             })
-        if bid >= current_bid.starting_bid and (current_bid.current_bid is None or bid > current_bid.current_bid):
+        if bid >= current_bid.starting_bid and (current_bid.current_bid is None or bid > current_bid.current_bid) and current_bid.user_id != request.user and request.user != auction_search.user_id:
             current_bid.current_bid = bid
             current_bid.user_id = request.user
             current_bid.bidders_quantity += 1
@@ -136,7 +136,7 @@ def listing(request, auction):
         else:
             return render(request, "auctions/error.html", {
                 "error": 400,
-                "error_message": f"Your bid must not be less than the current bid"
+                "error_message": f"Your bid does not fall within the established parameters. You can't bid on a listing that is yours or you are winning and your bid must not be lower than the last bid"
             })
         return HttpResponseRedirect(reverse('listing', args=[auction])) 
     else:
@@ -151,5 +151,6 @@ def listing(request, auction):
                 "auction": auction_search,
                 "bids": current_bid,
                 "current_bid": round(bid, 2),
+                "comments": Comments.objects.filter(auction_id=auction),
             },
         )
