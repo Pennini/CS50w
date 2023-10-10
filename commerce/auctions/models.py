@@ -39,6 +39,7 @@ class Bids(models.Model):
         User, on_delete=models.CASCADE, related_name="bids", blank=True, null=True
     )
     date_last_bid = models.DateTimeField(auto_now=True)
+    bidders_quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
         return f"Auction {self.auction_id}"

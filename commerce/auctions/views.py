@@ -108,5 +108,48 @@ def create_auction(request):
 
     return render(request, "auctions/create.html")
 
+
+@login_required(login_url="login")
 def listing(request, auction):
-    return render(request, "auctions/listing.html")
+    try:
+        auction_search = Auction.objects.get(pk=auction)
+        current_bid = Bids.objects.filter(auction_id=auction).get()
+    except:
+        return render(
+            request,
+            "auctions/error.html",
+            {"error": 404, "error_message": f"The listing {auction} wasn't found."},
+        )
+    if request.method == "POST":
+        try:
+            bid = float(request.POST["bid"].replace(",", "."))
+        except:
+            return render(request, "auctions/error.html", {
+                "error": 400,
+                "error_message": f"Your bid does not fall within the established parameters. Do not use commas for values ​and separate the decimal with a period"
+            })
+        if bid >= current_bid.starting_bid and (current_bid.current_bid is None or bid > current_bid.current_bid):
+            current_bid.current_bid = bid
+            current_bid.user_id = request.user
+            current_bid.bidders_quantity += 1
+            current_bid.save()
+        else:
+            return render(request, "auctions/error.html", {
+                "error": 400,
+                "error_message": f"Your bid must not be less than the current bid"
+            })
+        return HttpResponseRedirect(reverse('listing', args=[auction])) 
+    else:
+        if current_bid.current_bid:
+            bid = current_bid.current_bid
+        else:
+            bid = current_bid.starting_bid
+        return render(
+            request,
+            "auctions/listing.html",
+            {
+                "auction": auction_search,
+                "bids": current_bid,
+                "current_bid": round(bid, 2),
+            },
+        )
