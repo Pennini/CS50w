@@ -107,3 +107,6 @@ def create_auction(request):
             return HttpResponseRedirect(reverse("index"))
 
     return render(request, "auctions/create.html")
+
+def listing(request, auction):
+    return render(request, "auctions/listing.html")
