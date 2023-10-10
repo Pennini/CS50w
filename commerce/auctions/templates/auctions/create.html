@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="container">
+        <h1>Create an Auction</h1>
+        <form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="title">Title:</label>
+            <input type="text" name="title" required>
+            <label for="description">Description:</label>
+            <textarea name="description" required></textarea>
+            <label for="category">Category:</label>
+            <input type="text" name="category">
+            <label for="imagem">Image:</label>
+            <input type="file" name="image" accept="image/*">
+            <label for="price">Starting Bid:</label>
+            <input type="number" name="price" min="0">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+{% endblock  %}

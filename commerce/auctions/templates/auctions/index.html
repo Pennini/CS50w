@@ -14,7 +14,7 @@
                         <p>Price: ${{ auction.starting_bid }}</p>
                     {% endif %}
                     {% if auction.image %}
-                        <img alt="Auction: {{ auction.title }}" src="{% auction.image.url %}">
+                        <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
                     {% endif %}
                 </li>
             {% endfor %}
