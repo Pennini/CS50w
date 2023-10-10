@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Auction, AuctionAdmin)
-admin.site.register(Bids, BidsAdmin)
-admin.site.register(Comments, CommentsAdmin)
-admin.site.register(Watchlist, WatchlistAdmin)
+admin.site.register(Auction)
+admin.site.register(Bids)
+admin.site.register(Comments)
+admin.site.register(Watchlist)
