@@ -195,4 +195,7 @@ def category_list(request, category):
 
 @login_required(login_url="login")
 def watchlist(request):
-    return HttpResponseRedirect(reverse("categories"))
+    list_wacth = Watchlist.objects.filter(user_id=request.user).select_related("auction_id")
+    return render(request, "auctions/selected.html", {
+        "auction_listing": list_wacth,
+    })

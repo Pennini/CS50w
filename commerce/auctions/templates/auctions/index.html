@@ -3,10 +3,10 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    <ul>
+    <ul class="list-group">
         {% for auction in auction_listing %}
             <li>
-                <a href="{% url 'listing' auction.id %}">
+                <a href="{% url 'listing' auction.id %}" class="list-group-item list-group-item-action">
                 <h3>{{ auction.title }}</h3>
                 {% if  auction.current_bid %}
                     <p>Price: ${{ auction.current_bid }}</p>
