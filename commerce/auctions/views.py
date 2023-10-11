@@ -10,7 +10,7 @@ from .models import *
 
 
 @login_required(login_url="login")
-def index(request):
+def index(request, category=None):
     auctions = Auction.objects.raw(
         "SELECT * FROM auctions_auction AS a JOIN auctions_bids AS b ON a.id = b.auction_id_id"
     )
@@ -124,21 +124,34 @@ def listing(request, auction):
         try:
             bid = float(request.POST["bid"].replace(",", "."))
         except:
-            return render(request, "auctions/error.html", {
-                "error": 400,
-                "error_message": f"Your bid does not fall within the established parameters. Do not use commas for values ​and separate the decimal with a period"
-            })
-        if bid >= current_bid.starting_bid and (current_bid.current_bid is None or bid > current_bid.current_bid) and current_bid.user_id != request.user and request.user != auction_search.user_id:
+            return render(
+                request,
+                "auctions/error.html",
+                {
+                    "error": 400,
+                    "error_message": f"Your bid does not fall within the established parameters. Do not use commas for values ​and separate the decimal with a period",
+                },
+            )
+        if (
+            bid >= current_bid.starting_bid
+            and (current_bid.current_bid is None or bid > current_bid.current_bid)
+            and current_bid.user_id != request.user
+            and request.user != auction_search.user_id
+        ):
             current_bid.current_bid = bid
             current_bid.user_id = request.user
             current_bid.bidders_quantity += 1
             current_bid.save()
         else:
-            return render(request, "auctions/error.html", {
-                "error": 400,
-                "error_message": f"Your bid does not fall within the established parameters. You can't bid on a listing that is yours or you are winning and your bid must not be lower than the last bid"
-            })
-        return HttpResponseRedirect(reverse('listing', args=[auction])) 
+            return render(
+                request,
+                "auctions/error.html",
+                {
+                    "error": 400,
+                    "error_message": f"Your bid does not fall within the established parameters. You can't bid on a listing that is yours or you are winning and your bid must not be lower than the last bid",
+                },
+            )
+        return HttpResponseRedirect(reverse("listing", args=[auction]))
     else:
         if current_bid.current_bid:
             bid = current_bid.current_bid
@@ -154,3 +167,32 @@ def listing(request, auction):
                 "comments": Comments.objects.filter(auction_id=auction),
             },
         )
+
+
+@login_required(login_url="login")
+def categories(request):
+    return render(
+        request,
+        "auctions/categories.html",
+        {
+            "categories": Auction.objects.values("category").distinct(),
+        },
+    )
+
+
+@login_required(login_url="login")
+def category_list(request, category):
+    auctions = Auction.objects.filter(category=category)
+    return render(
+        request,
+        "auctions/selected.html",
+        {
+            "auction_listing": auctions,
+            "category": category,
+        },
+    )
+
+
+@login_required(login_url="login")
+def watchlist(request):
+    return HttpResponseRedirect(reverse("categories"))
