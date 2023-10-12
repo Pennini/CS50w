@@ -13,7 +13,7 @@ from .models import *
 @login_required(login_url="login")
 def index(request, category=None):
     auctions = Auction.objects.raw(
-        "SELECT * FROM auctions_auction AS a JOIN auctions_bids AS b ON a.id = b.auction_id_id"
+        "SELECT * FROM auctions_auction AS a JOIN auctions_bids AS b ON a.id = b.auction_id_id WHERE a.status = 'open'"
     )
     return render(request, "auctions/index.html", {"auction_listing": auctions})
 
@@ -162,7 +162,9 @@ def listing(request, auction):
         else:
             bid = current_bid.starting_bid
         try:
-            watchlists = auction_search.auction_favorite.filter(user_id=request.user).get()
+            watchlists = auction_search.auction_favorite.filter(
+                user_id=request.user
+            ).get()
         except:
             watchlists = None
         return render(
@@ -224,12 +226,17 @@ def change_watchlist(request, auction_id):
 
         if action == "takeout":
             try:
-                watch_auction = Watchlist.objects.filter(auction_id=auction_id).filter(user_id=request.user).get()
+                watch_auction = (
+                    Watchlist.objects.filter(auction_id=auction_id)
+                    .filter(user_id=request.user)
+                    .get()
+                )
             except:
-                return render(request, "auctions/error.html", {
-                    "error": 400,
-                    "error_message": "Error deleting from watchlist"
-                })
+                return render(
+                    request,
+                    "auctions/error.html",
+                    {"error": 400, "error_message": "Error deleting from watchlist"},
+                )
             else:
                 watch_auction.delete()
         elif action == "put":
@@ -237,4 +244,4 @@ def change_watchlist(request, auction_id):
             new_watch = Watchlist(auction_id=auction, user_id=request.user)
             new_watch.save()
 
-    return JsonResponse({"message": "Success"})
+        return JsonResponse({"message": "Success"})

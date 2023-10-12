@@ -90,14 +90,19 @@
             {% endif %}
         {% else %}
             <p>Auction CLOSED</p>
-            <p>Winner is {{ auction.user_id }}</p>
+            <p>Winner is {{ auction.user_id.username }}</p>
         {% endif %}
-        {% for comment in comments %}
-            <div class="comment">
-                <label>{{ comment.user_id.username }}:</label>
-                <p>{{ comment.comment }}</p>
-            </div>
-        {% endfor %}
+        <div class="comment">
+            <h2>Comments</h2>
+            {% for comment in comments %}
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-action">
+                        <label>{{ comment.user_id.username }}:</label>
+                        <p>{{ comment.comment }}</p>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
     {% else %}
         <h1>404</h1>
         <p>Page {{ auction }} not found</p>
