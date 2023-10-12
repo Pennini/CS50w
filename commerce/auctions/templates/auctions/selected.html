@@ -1,0 +1,34 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if category %}
+        <h2>Category: {{ category }}</h2>
+    {% else %}
+        <h2>Your watchlist</h2>
+    {% endif %}
+    <ul class="list-group">
+        {% for auction in auction_listing %}
+            <li>
+                {% if category %}
+                    <a href="{% url 'listing' auction.id %}" class="list-group-item list-group-item-action">
+                    <h3>{{ auction.title }}</h3>
+                    <p>{{ auction.description }}</p>
+                    {% if auction.image %}
+                        <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
+                    {% endif %}
+                    <p>Created {{ auction.date }}</p>
+                    </a>
+                {% else %}
+                    <a href="{% url 'listing' auction.auction_id.id %}" class="list-group-item list-group-item-action">
+                    <h3>{{ auction.auction_id.title }}</h3>
+                    <p>{{ auction.auction_id.description }}</p>
+                    {% if auction.auction_id.image %}
+                        <img alt="Auction: {{ auction.auction_id.title }}" src="{{ auction.auction_id.image.url }}">
+                    {% endif %}
+                    <p>Created {{ auction.auction_id.date }}</p>
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock body %}

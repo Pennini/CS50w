@@ -1,0 +1,107 @@
+{% extends "auctions/layout.html" %}
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector("#watchlist").onclick = () => {
+                const watchButton = document.querySelector("#watchlist");
+                const att = watchButton.getAttribute('class');
+                if (att === 'btn btn-secondary') {
+                    fetch("{% url 'change_watchlist' auction.id %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({ action: 'takeout',})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    watchButton.setAttribute('class', 'btn btn-outline-secondary');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                } else {
+                    fetch("{% url 'change_watchlist' auction.id %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({ action: 'put' })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    watchButton.setAttribute('class', 'btn btn-secondary');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                }
+                
+            }
+        });
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Teste se este cookie começa com o nome desejado
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+{% endblock script %}
+
+{% block body %}
+
+    {% if auction %}
+        {% if watchlists.auction_id_id == auction.id and watchlists.user_id == request.user %}
+            <button class="btn btn-secondary" id="watchlist" name="watchlist">Watchlist</button>
+        {% else %}
+            <button class="btn btn-outline-secondary" id="watchlist" name="watchlist">Watchlist</button>
+        {% endif %}
+        <h1>{{ auction.title }}</h1>
+        {% if auction.image %}
+            <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
+        {% endif %}
+        <p>{{ auction.description }}</p>
+        <p>${{ current_bid }}</p>
+        {% if auction.status == "open" %}
+            {% if bids.user_id %}
+                <p>{{ bids.bidders_quantity }} bid(s) so far. Last bidder was: {{ bids.user_id.username }}.</p>
+            {% else %}
+                <p>No bid yet.</p>
+            {% endif %}
+            <form action="{% url 'listing' auction.id %}" method="post">
+                {% csrf_token %}
+                <input type="decimal" placeholder="Bid" min="{{ bids.current_bid }}" name="bid">
+                <input class="btn btn-primary" type="submit" value="Place Bid">
+            </form>
+            {% if auction.user_id == request.user %}
+                <button class="btn btn-danger" name="close">Close Auction</button>
+            {% endif %}
+        {% else %}
+            <p>Auction CLOSED</p>
+            <p>Winner is {{ auction.user_id }}</p>
+        {% endif %}
+        {% for comment in comments %}
+            <div class="comment">
+                <label>{{ comment.user_id.username }}:</label>
+                <p>{{ comment.comment }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h1>404</h1>
+        <p>Page {{ auction }} not found</p>
+    {% endif %}
+
+{% endblock body %}
+

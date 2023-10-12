@@ -4,7 +4,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.db.models import F
+import json
+from django.http import JsonResponse
 
 from .models import *
 
@@ -79,8 +80,11 @@ def create_auction(request):
         title = request.POST["title"]
         description = request.POST["description"]
         category = request.POST["category"]
-        image = request.FILES["image"]
         price = request.POST["price"]
+        try:
+            image = request.FILES["image"]
+        except:
+            image = None
 
         if not title or not description or not price:
             return render(
@@ -157,10 +161,15 @@ def listing(request, auction):
             bid = current_bid.current_bid
         else:
             bid = current_bid.starting_bid
+        try:
+            watchlists = auction_search.auction_favorite.filter(user_id=request.user).get()
+        except:
+            watchlists = None
         return render(
             request,
             "auctions/listing.html",
             {
+                "watchlists": watchlists,
                 "auction": auction_search,
                 "bids": current_bid,
                 "current_bid": round(bid, 2),
@@ -195,7 +204,37 @@ def category_list(request, category):
 
 @login_required(login_url="login")
 def watchlist(request):
-    list_wacth = Watchlist.objects.filter(user_id=request.user).select_related("auction_id")
-    return render(request, "auctions/selected.html", {
-        "auction_listing": list_wacth,
-    })
+    list_wacth = Watchlist.objects.filter(user_id=request.user).select_related(
+        "auction_id"
+    )
+    return render(
+        request,
+        "auctions/selected.html",
+        {
+            "auction_listing": list_wacth,
+        },
+    )
+
+
+@login_required(login_url="login")
+def change_watchlist(request, auction_id):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        action = data.get("action")
+
+        if action == "takeout":
+            try:
+                watch_auction = Watchlist.objects.filter(auction_id=auction_id).filter(user_id=request.user).get()
+            except:
+                return render(request, "auctions/error.html", {
+                    "error": 400,
+                    "error_message": "Error deleting from watchlist"
+                })
+            else:
+                watch_auction.delete()
+        elif action == "put":
+            auction = Auction.objects.get(pk=auction_id)
+            new_watch = Watchlist(auction_id=auction, user_id=request.user)
+            new_watch.save()
+
+    return JsonResponse({"message": "Success"})
