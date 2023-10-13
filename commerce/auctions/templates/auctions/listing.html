@@ -67,6 +67,8 @@
         <div class="main col-lg-6 col-md-6" id="left">
             {% if auction.image %}
                     <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
+            {% else %}
+                    <img src="media/images/no-image.png" alt="No image available">
             {% endif %}
             <div id="details">
                 <h2>Details</h2>
@@ -125,7 +127,11 @@
                 {% endif %}
             {% else %}
                 <p>Auction CLOSED</p>
-                <p>Winner is {{ bids.user_id }}</p>
+                {% if bids.user_id %}
+                    <p>Winner is {{ bids.user_id.username }}</p>
+                {% else %}
+                    <p>Auction Canceled</p>
+                {% endif %}
             {% endif %}
         </div>
     {% else %}

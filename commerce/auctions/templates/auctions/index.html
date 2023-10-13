@@ -7,17 +7,25 @@
         {% for auction in auction_listing %}
             <li>
                 <a href="{% url 'listing' auction.id %}" class="list-group-item list-group-item-action">
-                <h3>{{ auction.title }}</h3>
-                {% if  auction.current_bid %}
-                    <p>Price: ${{ auction.current_bid }}</p>
-                {% else %}
-                    <p>Price: ${{ auction.starting_bid }}</p>
-                {% endif %}
-                <p>{{ auction.description }}</p>
-                {% if auction.image %}
-                    <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
-                {% endif %}
-                <p>Created {{ auction.date }}</p>
+                <div class="row">
+                    <div class="main col-lg-6 col-md-6" id="left">
+                        {% if auction.image %}
+                            <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
+                        {% else %}
+                            <img src="media/images/no-image.png" alt="No image available">
+                        {% endif %}
+                    </div>
+                    <div class="sidebar col-lg-6 col-md-6" id="right">
+                            <h3>{{ auction.title }}</h3>
+                            {% if  auction.current_bid %}
+                                <p>Price: ${{ auction.current_bid }}</p>
+                            {% else %}
+                                <p>Price: ${{ auction.starting_bid }}</p>
+                            {% endif %}
+                            <p>{{ auction.description }}</p>
+                            <p>Created {{ auction.date }}</p>
+                    </div>
+                </div>
                 </a>
             </li>
         {% endfor %}

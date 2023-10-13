@@ -251,16 +251,19 @@ def change_watchlist(request, auction_id):
 def close(request, auction_id):
     if request.method == "POST":
         auction = Auction.objects.get(pk=auction_id)
-        auction.status = "close"
+        auction.status = "closed"
         auction.save()
 
     return HttpResponseRedirect(reverse("listing", args=[auction_id]))
+
 
 @login_required(login_url="login")
 def comment(request, auction_id):
     if request.method == "POST":
         comments = request.POST["comment"]
         auction = Auction.objects.get(pk=auction_id)
-        comment_db = Comments(auction_id=auction, user_id=request.user, comment=comments)
+        comment_db = Comments(
+            auction_id=auction, user_id=request.user, comment=comments
+        )
         comment_db.save()
     return HttpResponseRedirect(reverse("listing", args=[auction_id]))
