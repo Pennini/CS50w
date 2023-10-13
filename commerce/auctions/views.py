@@ -117,7 +117,7 @@ def create_auction(request):
 def listing(request, auction):
     try:
         auction_search = Auction.objects.get(pk=auction)
-        current_bid = Bids.objects.filter(auction_id=auction).get()
+        current_bid = auction_search.bids.get()
     except:
         return render(
             request,
@@ -245,3 +245,22 @@ def change_watchlist(request, auction_id):
             new_watch.save()
 
         return JsonResponse({"message": "Success"})
+
+
+@login_required(login_url="login")
+def close(request, auction_id):
+    if request.method == "POST":
+        auction = Auction.objects.get(pk=auction_id)
+        auction.status = "close"
+        auction.save()
+
+    return HttpResponseRedirect(reverse("listing", args=[auction_id]))
+
+@login_required(login_url="login")
+def comment(request, auction_id):
+    if request.method == "POST":
+        comments = request.POST["comment"]
+        auction = Auction.objects.get(pk=auction_id)
+        comment_db = Comments(auction_id=auction, user_id=request.user, comment=comments)
+        comment_db.save()
+    return HttpResponseRedirect(reverse("listing", args=[auction_id]))

@@ -63,45 +63,70 @@
 {% block body %}
 
     {% if auction %}
-        {% if watchlists.auction_id_id == auction.id and watchlists.user_id == request.user %}
-            <button class="btn btn-secondary" id="watchlist" name="watchlist">Watchlist</button>
-        {% else %}
-            <button class="btn btn-outline-secondary" id="watchlist" name="watchlist">Watchlist</button>
-        {% endif %}
-        <h1>{{ auction.title }}</h1>
-        {% if auction.image %}
-            <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
-        {% endif %}
-        <p>{{ auction.description }}</p>
-        <p>${{ current_bid }}</p>
-        {% if auction.status == "open" %}
-            {% if bids.user_id %}
-                <p>{{ bids.bidders_quantity }} bid(s) so far. Last bidder was: {{ bids.user_id.username }}.</p>
-            {% else %}
-                <p>No bid yet.</p>
+    <div class="row">
+        <div class="main col-lg-6 col-md-6" id="left">
+            {% if auction.image %}
+                    <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
             {% endif %}
-            <form action="{% url 'listing' auction.id %}" method="post">
-                {% csrf_token %}
-                <input type="decimal" placeholder="Bid" min="{{ bids.current_bid }}" name="bid">
-                <input class="btn btn-primary" type="submit" value="Place Bid">
-            </form>
-            {% if auction.user_id == request.user %}
-                <button class="btn btn-danger" name="close">Close Auction</button>
-            {% endif %}
-        {% else %}
-            <p>Auction CLOSED</p>
-            <p>Winner is {{ auction.user_id.username }}</p>
-        {% endif %}
-        <div class="comment">
-            <h2>Comments</h2>
-            {% for comment in comments %}
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-action">
-                        <label>{{ comment.user_id.username }}:</label>
-                        <p>{{ comment.comment }}</p>
-                    </li>
+            <div id="details">
+                <h2>Details</h2>
+                <ul>
+                    <li>Listed by: {{ auction.user_id.username }}</li>
+                    {% if auction.category %}
+                        <li>Category: {{ auction.category }}</li>
+                    {% else %}
+                        <li>Category: No category Listed</li>
+                    {% endif %}
+                    <li>Created {{auction.date}}</li>
                 </ul>
-            {% endfor %}
+            </div>
+            <div class="comment">
+                <h2>Comments</h2>
+                <form action="{% url 'comment' auction.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" placeholder="comment" name="comment" class="form-control">
+                    <input type="submit" style="visibility: hidden;">
+                </form>
+                {% for comment in comments %}
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-action">
+                            <label>{{ comment.user_id.username }}:</label>
+                            <p>{{ comment.comment }}</p>
+                        </li>
+                    </ul>
+               {% endfor %}
+            </div>
+        </div>
+        <div class="sidebar col-lg-6 col-md-6" id="right">
+            {% if watchlists.auction_id_id == auction.id and watchlists.user_id == request.user %}
+                <button class="btn btn-secondary" id="watchlist" name="watchlist">Watchlist</button>
+            {% else %}
+                <button class="btn btn-outline-secondary" id="watchlist" name="watchlist">Watchlist</button>
+            {% endif %}
+            <h1>{{ auction.title }}</h1>
+            <p>{{ auction.description }}</p>
+            <p>${{ current_bid }}</p>
+            {% if auction.status == "open" %}
+                {% if bids.user_id %}
+                    <p>{{ bids.bidders_quantity }} bid(s) so far. Last bidder was: {{ bids.user_id.username }}.</p>
+                {% else %}
+                    <p>No bid yet.</p>
+                {% endif %}
+                <form action="{% url 'listing' auction.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="decimal" placeholder="Bid" min="{{ bids.current_bid }}" name="bid">
+                    <input class="btn btn-primary" type="submit" value="Place Bid">
+                </form>
+                {% if auction.user_id == request.user and auction.status == "open" %}
+                    <form action="{% url 'close' auction.id %}" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-danger" name="close" type="submit" value="Close Auction">
+                    </form>
+                {% endif %}
+            {% else %}
+                <p>Auction CLOSED</p>
+                <p>Winner is {{ bids.user_id }}</p>
+            {% endif %}
         </div>
     {% else %}
         <h1>404</h1>
