@@ -1,34 +1,46 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    {% if category %}
-        <h2>Category: {{ category }}</h2>
-    {% else %}
-        <h2>Your watchlist</h2>
-    {% endif %}
-    <ul class="list-group">
-        {% for auction in auction_listing %}
-            <li>
-                {% if category %}
-                    <a href="{% url 'listing' auction.id %}" class="list-group-item list-group-item-action">
-                    <h3>{{ auction.title }}</h3>
-                    <p>{{ auction.description }}</p>
-                    {% if auction.image %}
-                        <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
+        {% if category %}
+            <h2>Category: {{ category }}</h2>
+        {% else %}
+            <h2>Your watchlist</h2>
+        {% endif %}
+        <ul class="list-group">
+            {% for auction in auction_listing %}
+                <li>
+                    {% if category and auction.status == 'open' %}
+                        <a href="{% url 'listing' auction.id %}" class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="main col-lg-6 col-md-6" id="left">
+                                <div class="img">
+                                    <img class="img-fluid" alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
+                                </div>
+                            </div>
+                            <div class="sidebar col-lg-6 col-md-6" id="right">
+                                <h3>{{ auction.title }}</h3>
+                                <p>{{ auction.description }}</p>
+                                <p>Created {{ auction.date }}</p>
+                            </div>
+                        </div>
+                        </a>
+                    {% elif not category %}
+                        <a href="{% url 'listing' auction.auction_id.id %}" class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="main col-lg-6 col-md-6" id="left">
+                                <img class="img-fluid" alt="Auction: {{ auction.auction_id.title }}" src="{{ auction.auction_id.image.url }}">
+                            </div>
+                            <div class="sidebar col-lg-6 col-md-6" id="right">
+                                <h3>{{ auction.auction_id.title }}</h3>
+                                <p>{{ auction.auction_id.description }}</p>
+                                <p>Created {{ auction.auction_id.date }}</p>
+                            </div>
+                        </div>
+                        </a>
+                    {% else %}
+                        <p>Nothing found.</p>
                     {% endif %}
-                    <p>Created {{ auction.date }}</p>
-                    </a>
-                {% else %}
-                    <a href="{% url 'listing' auction.auction_id.id %}" class="list-group-item list-group-item-action">
-                    <h3>{{ auction.auction_id.title }}</h3>
-                    <p>{{ auction.auction_id.description }}</p>
-                    {% if auction.auction_id.image %}
-                        <img alt="Auction: {{ auction.auction_id.title }}" src="{{ auction.auction_id.image.url }}">
-                    {% endif %}
-                    <p>Created {{ auction.auction_id.date }}</p>
-                    </a>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+                </li>
+            {% endfor %}
+        </ul>
 {% endblock body %}

@@ -17,8 +17,8 @@
                 Not signed in.
             {% endif %}
         </div>
-        <div>
-            <ul class="nav">
+        <div class="nav-bar">
+            <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
                 </li>
@@ -45,7 +45,6 @@
                 {% endif %}
             </ul>
         </div>
-        <hr>
         <div class="container">
             {% block body %}
             {% endblock %}

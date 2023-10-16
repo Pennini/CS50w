@@ -65,11 +65,7 @@
     {% if auction %}
     <div class="row">
         <div class="main col-lg-6 col-md-6" id="left">
-            {% if auction.image %}
-                    <img alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
-            {% else %}
-                    <img src="media/images/no-image.png" alt="No image available">
-            {% endif %}
+            <img class="img-fluid" alt="Auction: {{ auction.title }}" src="{{ auction.image.url }}">
             <div id="details">
                 <h2>Details</h2>
                 <ul>
@@ -99,7 +95,7 @@
                {% endfor %}
             </div>
         </div>
-        <div class="sidebar col-lg-6 col-md-6" id="right">
+        <div class="sidebar col-lg-6 col-md-6">
             {% if watchlists.auction_id_id == auction.id and watchlists.user_id == request.user %}
                 <button class="btn btn-secondary" id="watchlist" name="watchlist">Watchlist</button>
             {% else %}
@@ -114,11 +110,15 @@
                 {% else %}
                     <p>No bid yet.</p>
                 {% endif %}
-                <form action="{% url 'listing' auction.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="decimal" placeholder="Bid" min="{{ bids.current_bid }}" name="bid">
-                    <input class="btn btn-primary" type="submit" value="Place Bid">
-                </form>
+                <div class="form-bid">
+                    <form action="{% url 'listing' auction.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <input autofocus id="bid" type="decimal" min="0" name="bid">
+                            <input class="btn btn-primary" type="submit" value="Place Bid">
+                        </div>
+                    </form>
+                </div>
                 {% if auction.user_id == request.user and auction.status == "open" %}
                     <form action="{% url 'close' auction.id %}" method="post">
                         {% csrf_token %}

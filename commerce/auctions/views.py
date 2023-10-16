@@ -10,7 +10,6 @@ from django.http import JsonResponse
 from .models import *
 
 
-@login_required(login_url="login")
 def index(request, category=None):
     auctions = Auction.objects.raw(
         "SELECT * FROM auctions_auction AS a JOIN auctions_bids AS b ON a.id = b.auction_id_id WHERE a.status = 'open'"
@@ -174,7 +173,7 @@ def listing(request, auction):
                 "watchlists": watchlists,
                 "auction": auction_search,
                 "bids": current_bid,
-                "current_bid": round(bid, 2),
+                "current_bid": f"{bid:,.2f}",
                 "comments": Comments.objects.filter(auction_id=auction),
             },
         )

@@ -18,7 +18,7 @@ class Auction(models.Model):
     user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="auctioneer"
     )
-    image = models.ImageField(upload_to="images/", blank=True)
+    image = models.ImageField(upload_to="images/", blank=True, default='images/no-image.png')
     category = models.CharField(max_length=64, blank=True)
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, default="open")
     date = models.DateField(auto_now_add=True)
