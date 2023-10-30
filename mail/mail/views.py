@@ -77,6 +77,7 @@ def mailbox(request, mailbox):
         )
     elif mailbox == "sent":
         emails = Email.objects.filter(user=request.user, sender=request.user)
+        print("sent")
     elif mailbox == "archive":
         emails = Email.objects.filter(
             user=request.user, recipients=request.user, archived=True
