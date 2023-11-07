@@ -24,6 +24,26 @@
         border: 0px;
     }
 }
+.container {
+    margin-top: 10px;
+}
+.form-enter {
+    margin-top: 100px;
+    text-align: center;
+}
+.form-enter form input {
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#email {
+    margin-top: 30px;
+}
+#submit-enter {
+    width: 100px;
+    text-align: center;
+}
+
 textarea {
     min-height: 300px;
 }

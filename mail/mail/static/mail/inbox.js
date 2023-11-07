@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#compose-form').addEventListener('submit', sendEmail);
   window.addEventListener('click', (event) => {
     const element = event.target;
-    if (element.className === 'emails-list' || element.tagName === 'SPAN' || element.tagName === 'STRONG') {
+    if (element.className === 'col-sm-10' || element.tagName === 'SPAN' || element.tagName === 'STRONG') {
       const emails = document.querySelector("#emails-view");
       const id_mail = element.dataset.id;
       fetch(`/emails/${id_mail}`)
