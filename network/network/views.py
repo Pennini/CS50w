@@ -3,12 +3,43 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
-from .models import User
+from .models import User, Post, Likes, Follow
 
 
 def index(request):
-    return render(request, "network/index.html")
+    if request.user.is_authenticated:
+        posts = Post.objects.order_by("-timestamp").all()
+
+        return render(request, "network/index.html", {
+            "posts": posts
+        })
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+@csrf_exempt
+@login_required
+def compose(request):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+    text = data.get("text")
+    if not text:
+        return JsonResponse({"error": "POST must have content"}, status=400)
+    
+    post = Post(user=request.user, content=text)
+    post.save()
+
+    return JsonResponse({"message": "POST was sent succesfully"}, status=201, safe=False)
+
+
 
 
 def login_view(request):

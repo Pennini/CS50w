@@ -1,5 +1,29 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
-    TODO
+    <div class="post">
+        <form id="compose-post">
+            {% csrf_token %}
+            <div class="form-group">
+                <img src="{% static 'network/images/avatar.jpg' %}" alt="ícone avatar" class="icone">
+                <textarea type="text" id="text-post" class="form-control" placeholder="What's happening?"></textarea>
+            </div>
+            <div id="error">Post must have a content</div>
+            <input type="submit" value="Post" class="btn btn-primary">
+        </form>
+    </div>
+    <div id="posts-index">
+        {% for post in posts %}
+            <div class="post">
+                <h4>{{ post.user }}</h4>
+                <p>{{ post.content }}</p>
+                <p>{{ post.timestamp }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/main.js' %}"></script>
 {% endblock %}

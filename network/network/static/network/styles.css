@@ -1,0 +1,32 @@
+.post {
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border: 1px solid thistle;
+    padding: 20px;
+    text-align: center;
+}
+.form-group {
+    display: flex;
+}
+.icone {
+    width: 60px;
+    height: 60px;
+}
+textarea {
+    max-height: 200px;
+    min-height: 65px;
+    margin-bottom: 0px;
+}
+#error {
+    display: none;
+    background-color: red;
+    border: 1px solid black;
+    width: 1030px;
+    margin-left: 60px;
+    height: 30px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    padding-top: 0px;
+}
