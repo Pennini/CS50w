@@ -1,7 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    document.querySelector('#compose-post').addEventListener('submit', sendPost);
+    if (document.querySelector('#compose-post') != null) {
+        document.querySelector('#compose-post').addEventListener('submit', sendPost);
+    }
 
+    window.addEventListener('click', (event) => {
+        const element = event.target;
+        if (element.className === 'icone-like') {
+            const post_id = element.dataset.id;
+            let like = parseInt(document.querySelector(`#like-${post_id}`).innerHTML);
+            if (element.src === 'http://127.0.0.1:8000/static/network/images/like.png') {
+                element.src = '/static/network/images/unlike.png';
+                like--;
+            } else {
+                element.src = '/static/network/images/like.png';
+                like++;
+            }
+            document.querySelector(`#like-${post_id}`).innerHTML = like;
+        }
+    });
 
 });
 
@@ -9,15 +26,32 @@ document.addEventListener('DOMContentLoaded', function() {
 function sendPost(event) {
     event.preventDefault();
     const text = document.querySelector('#text-post').value;
+    let error_message = document.querySelector("#error");
     if (!text.trim()) {
         console.log('Error: No text to post');
-        let error_message = document.querySelector("#error");
         error_message.style.display = 'block';
+        error_message.innerHTML = 'No text to post';
         setTimeout(() => {
             error_message.style.display = 'none';
         }, 4000);
         return;
-    } 
+    } else if (text.length > 280) {
+        console.log('Error: Text too long');
+        error_message.style.display = 'block';
+        error_message.innerHTML = 'Text too long';
+        setTimeout(() => {
+            error_message.style.display = 'none';
+        }, 4000);
+        return;
+    } else {
+        console.log('Success: Post sent');
+        error_message.style.display = 'block';
+        error_message.style.backgroundColor = 'green';
+        error_message.innerHTML = 'Text posted successfully';
+        setTimeout(() => {
+            error_message.style.display = 'none';
+        }, 4000);
+    }
     fetch('/posts', {
         method: 'POST',
         body: JSON.stringify({

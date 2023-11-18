@@ -2,10 +2,49 @@
     margin-left: 200px;
     margin-right: 200px;
     margin-top: 25px;
-    margin-bottom: 25px;
     border: 1px solid thistle;
     padding: 20px;
     text-align: center;
+}
+span {
+    word-wrap: break-word;
+    margin-right: 10px;
+}
+.post-views {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 10px;
+    border: 1px solid thistle;
+    padding: 20px;
+    text-align: left;
+}
+#info-profile {
+    text-align: center;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+.post-but {
+    margin-bottom: 10px;
+}
+.like-but {
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.like-post {
+    margin-right: 10px;
+}
+.user-id {
+    color: darkslategrey;
+}
+.user-id:hover, .edit-post:hover, .comment-post:hover {
+    color: rgb(34, 46, 46);
+    text-decoration: none;
+}
+.comment-post, .timestamp {
+    color: rgb(129, 125, 125);
 }
 .form-group {
     display: flex;
@@ -13,6 +52,10 @@
 .icone {
     width: 60px;
     height: 60px;
+}
+.icone-like {
+    width: 35px;
+    height: 30px;
 }
 textarea {
     max-height: 200px;

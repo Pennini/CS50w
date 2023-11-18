@@ -21,6 +21,28 @@ def index(request):
         })
     else:
         return HttpResponseRedirect(reverse("login"))
+    
+@login_required
+def profile(request, user_id):
+    posts = Post.objects.filter(user=user_id).order_by("-timestamp").all()
+    followers = Follow.objects.filter(following=user_id).count()
+    following = Follow.objects.filter(user=user_id).count()
+    if request.user.is_authenticated:
+        if request.user == user_id:
+            return render(request, "network/profile.html", {
+                "posts": posts,
+                "followers": followers,
+                "following": following
+            })
+        else:
+            return render(request, "network/profile.html", {
+                "posts": posts,
+                "followers": followers,
+                "following": following,
+                "follow": True
+            })
+    else:
+        return HttpResponseRedirect(reverse("login"))
 
 @csrf_exempt
 @login_required

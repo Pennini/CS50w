@@ -7,18 +7,36 @@
             {% csrf_token %}
             <div class="form-group">
                 <img src="{% static 'network/images/avatar.jpg' %}" alt="ícone avatar" class="icone">
-                <textarea type="text" id="text-post" class="form-control" placeholder="What's happening?"></textarea>
+                <textarea maxlength="300" type="text" id="text-post" class="form-control" placeholder="What's happening?"></textarea>
             </div>
-            <div id="error">Post must have a content</div>
+            <div id="error"></div>
             <input type="submit" value="Post" class="btn btn-primary">
         </form>
     </div>
     <div id="posts-index">
         {% for post in posts %}
-            <div class="post">
-                <h4>{{ post.user }}</h4>
-                <p>{{ post.content }}</p>
-                <p>{{ post.timestamp }}</p>
+            <div class="post-views">
+                <span>
+                    <a href="{% url 'profile' post.user.id %}" class="user-id"><h4>{{ post.user }}</h4></a>
+                    <p>{{ post.content }}</p>
+                    <p class="timestamp">{{ post.timestamp }}</p>
+                </span>
+                <span>
+                    <div class="post-interaction">
+                        <div class="post-but">
+                            <a href="#" class="edit-post" data-id="{{ post.id }}">Edit</a>
+                        </div>
+                        <div class="like-but">
+                            <a href="#" class="like-post">
+                                <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
+                            </a>
+                            <div id="like-{{ post.id }}">{{ post.likes_post }}</div>
+                        </div>
+                        <div class="post-but">
+                            <a href="#" class="comment-post" data-id="{{ post.id }}">Comment</a>
+                        </div>
+                    </div>
+                </span>
             </div>
         {% endfor %}
     </div>

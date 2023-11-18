@@ -1,0 +1,49 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+    <div id="info-profile">
+        <h2>Profile</h2>
+        <div>
+            <p>Username: {{ user.username }}</p>
+            <div id="follow-profile">
+                <span>Followers: {{ followers }}</span>
+                <span>Following: {{ following }}</span>
+            </div>
+        </div>
+        <br>
+        <div class="follow-but">
+            <button class="btn btn-primary" data-userid="{{ user.id }}">Follow</button>
+        </div>
+    </div>
+    {% for post in posts %}
+        <div class="post-views">
+            <span>
+                <a href="{% url 'profile' post.user.id %}" class="user-id"><h4>{{ post.user }}</h4></a>
+                <p>{{ post.content }}</p>
+                <p class="timestamp">{{ post.timestamp }}</p>
+            </span>
+            <span>
+                <div class="post-interaction">
+                    <div class="post-but">
+                        <a href="#" class="edit-post" data-id="{{ post.id }}">Edit</a>
+                    </div>
+                    <div class="like-but">
+                        <a href="#" class="like-post">
+                            <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
+                        </a>
+                        <div id="like-{{ post.id }}">{{ post.likes_post }}</div>
+                    </div>
+                    <div class="post-but">
+                        <a href="#" class="comment-post" data-id="{{ post.id }}">Comment</a>
+                    </div>
+                </div>
+            </span>
+        </div>
+    {% endfor %}
+{% endblock body %}
+
+{% block script %}
+    <script src="{% static 'network/main.js' %}"></script>
+{% endblock %}
