@@ -3,22 +3,7 @@
 
 
 {% block body %}
-    <div id="info-profile">
-        <h2>Profile</h2>
-        <div>
-            <p>Username: {{ user_id.username }}</p>
-            <div id="follow-profile">
-                <span>Followers: {{ followers }}</span>
-                <span>Following: {{ following }}</span>
-            </div>
-        </div>
-        <br>
-        {% if user.id != user_id.id %}
-            <div class="follow-but">
-                <button class="btn btn-primary" data-userid="{{ user.id }}">Follow</button>
-            </div>
-        {% endif %}
-    </div>
+    <p>Following: {{ see }}</p>
     {% for post in posts %}
         <div class="post-views">
             <span>

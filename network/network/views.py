@@ -23,19 +23,33 @@ def index(request):
         return HttpResponseRedirect(reverse("login"))
     
 @login_required
+def following(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        posts = Post.objects.filter(user__in=user.followers.all()).order_by("-timestamp").all()
+        return render(request, "network/follow.html", {
+            "posts": posts
+        })
+    else:
+        return HttpResponseRedirect(reverse("login"))
+    
+@login_required
 def profile(request, user_id):
+    user = User.objects.get(id=user_id)
     posts = Post.objects.filter(user=user_id).order_by("-timestamp").all()
     followers = Follow.objects.filter(following=user_id).count()
     following = Follow.objects.filter(user=user_id).count()
     if request.user.is_authenticated:
         if request.user == user_id:
             return render(request, "network/profile.html", {
+                "user_id": user,
                 "posts": posts,
                 "followers": followers,
                 "following": following
             })
         else:
             return render(request, "network/profile.html", {
+                "user_id": user,
                 "posts": posts,
                 "followers": followers,
                 "following": following,

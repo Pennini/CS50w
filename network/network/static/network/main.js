@@ -7,16 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('click', (event) => {
         const element = event.target;
         if (element.className === 'icone-like') {
-            const post_id = element.dataset.id;
-            let like = parseInt(document.querySelector(`#like-${post_id}`).innerHTML);
-            if (element.src === 'http://127.0.0.1:8000/static/network/images/like.png') {
-                element.src = '/static/network/images/unlike.png';
-                like--;
-            } else {
-                element.src = '/static/network/images/like.png';
-                like++;
-            }
-            document.querySelector(`#like-${post_id}`).innerHTML = like;
+            event.preventDefault();
+            changeImage(element);
         }
     });
 
@@ -66,4 +58,19 @@ function sendPost(event) {
       .catch(error => {
           console.log('Error:', error);
       });
+}
+
+function changeImage(element) {
+    const post_id = element.dataset.id;
+    let like = parseInt(document.querySelector(`#like-${post_id}`).innerHTML);
+    if (element.src === 'http://127.0.0.1:8000/static/network/images/like.png') {
+        element.src = '/static/network/images/unlike.png';
+        like--;
+    } else {
+        element.src = '/static/network/images/like.png';
+        like++;
+    }
+    document.querySelector(`#like-${post_id}`).innerHTML = like;
+    
+
 }

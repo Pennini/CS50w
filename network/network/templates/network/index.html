@@ -23,9 +23,11 @@
                 </span>
                 <span>
                     <div class="post-interaction">
-                        <div class="post-but">
-                            <a href="#" class="edit-post" data-id="{{ post.id }}">Edit</a>
-                        </div>
+                        {% if user.id == post.user.id %}
+                            <div class="post-but">
+                                <a href="#" class="edit-post" data-id="{{ post.id }}">Edit</a>
+                            </div>
+                        {% endif %}
                         <div class="like-but">
                             <a href="#" class="like-post">
                                 <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
