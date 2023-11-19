@@ -62,15 +62,21 @@ function sendPost(event) {
 
 function changeImage(element) {
     const post_id = element.dataset.id;
-    let like = parseInt(document.querySelector(`#like-${post_id}`).innerHTML);
     if (element.src === 'http://127.0.0.1:8000/static/network/images/like.png') {
         element.src = '/static/network/images/unlike.png';
-        like--;
     } else {
         element.src = '/static/network/images/like.png';
-        like++;
     }
-    document.querySelector(`#like-${post_id}`).innerHTML = like;
-    
+    fetch(`/posts/${post_id}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        document.querySelector(`#like-${post_id}`).innerHTML = result.likes;
+    })
+    .catch(error => {
+        console.log('Error:', error);
+    });
 
 }

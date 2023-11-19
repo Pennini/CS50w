@@ -15,19 +15,50 @@ from .models import User, Post, Likes, Follow
 def index(request):
     if request.user.is_authenticated:
         posts = Post.objects.order_by("-timestamp").all()
-
+        
+        liked_posts = set(request.user.likes.filter(like=True).values_list('post_id', flat=True))
+        for post in posts:
+            post.is_liked = post.id in liked_posts
         return render(request, "network/index.html", {
             "posts": posts
         })
     else:
         return HttpResponseRedirect(reverse("login"))
+
+@csrf_exempt
+@login_required
+def like(request, post_id):
+    if request.method == "POST":
+        post = Post.objects.get(id=post_id)
+        user = User.objects.get(id=request.user.id)
+        if Likes.objects.filter(user=user, post=post).exists():
+            like = Likes.objects.get(user=user, post=post)
+            if like.like == True:
+                like.like = False
+                like.save()
+                post.likes_post -= 1
+                post.save()
+                return JsonResponse({"message": "Like was removed succesfully", "likes": post.likes_post}, status=201, safe=False)
+            else:
+                like.like = True
+                like.save()
+                post.likes_post += 1
+                post.save()
+                return JsonResponse({"message": "Like was added succesfully", "likes": post.likes_post}, status=201, safe=False)
+        else:
+            like = Likes(user=user, post=post, like=True)
+            like.save()
+            post.likes_post += 1
+            post.save()
+            return JsonResponse({"message": "Like was added succesfully", "likes": post.likes_post}, status=201, safe=False)
+    else:
+        return JsonResponse({"error": "POST request required."}, status=400)
     
 @login_required
 def following(request):
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
-        querysets = [query.following.id for query in user.following.all()]
-        posts = Post.objects.filter(user__in=querysets).order_by("-timestamp").all()
+        posts = Post.objects.filter(user__in=user.following.values('id')).order_by("-timestamp").all()
         return render(request, "network/follow.html", {
             "posts": posts
         })
