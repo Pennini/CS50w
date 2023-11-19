@@ -26,7 +26,8 @@ def index(request):
 def following(request):
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
-        posts = Post.objects.filter(user__in=user.followers.all()).order_by("-timestamp").all()
+        querysets = [query.following.id for query in user.following.all()]
+        posts = Post.objects.filter(user__in=querysets).order_by("-timestamp").all()
         return render(request, "network/follow.html", {
             "posts": posts
         })
