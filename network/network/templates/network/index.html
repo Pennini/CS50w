@@ -1,7 +1,7 @@
-{% extends "network/layout.html" %}
+{% extends "network/layout_posts.html" %}
 {% load static %}
 
-{% block body %}
+{% block content %}
     <div class="post">
         <form id="compose-post">
             {% csrf_token %}
@@ -13,40 +13,7 @@
             <input type="submit" value="Post" class="btn btn-primary">
         </form>
     </div>
-    <div id="posts-index">
-        {% for post in posts %}
-            <div class="post-views">
-                <span>
-                    <a href="{% url 'profile' post.user.id %}" class="user-id"><h4>{{ post.user }}</h4></a>
-                    <p>{{ post.content }}</p>
-                    <p class="timestamp">{{ post.timestamp }}</p>
-                </span>
-                <span>
-                    <div class="post-interaction">
-                        {% if user.id == post.user.id %}
-                            <div class="post-but">
-                                <a href="#" class="edit-post" data-id="{{ post.id }}">Edit</a>
-                            </div>
-                        {% endif %}
-                        <div class="like-but">
-                            <a href="#" class="like-post">
-                                {% if post.is_liked %}
-                                    <img data-id="{{ post.id }}" src="{% static 'network/images/like.png' %}" alt="like button" class="icone-like">
-                                {% else %}
-                                    <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
-                                {% endif %}
-                            </a>
-                            <div id="like-{{ post.id }}">{{ post.likes_post }}</div>
-                        </div>
-                        <div class="post-but">
-                            <a href="#" class="comment-post" data-id="{{ post.id }}">Comment</a>
-                        </div>
-                    </div>
-                </span>
-            </div>
-        {% endfor %}
-    </div>
-{% endblock %}
+{% endblock content %}
 
 {% block script %}
     <script src="{% static 'network/main.js' %}"></script>

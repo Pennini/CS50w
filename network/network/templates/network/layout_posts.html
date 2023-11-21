@@ -1,0 +1,57 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    {% for post in posts %}
+        <div class="post-views">
+            <div class="post-content" id="post-content-{{ post.id }}">
+                <span>
+                    <a href="{% url 'profile' post.user.id %}" class="user-id"><h4>{{ post.user }}</h4></a>
+                    <p>{{ post.content }}</p>
+                    <p class="timestamp">{{ post.timestamp }}</p>
+                </span>
+                <span>
+                    <div class="post-interaction">
+                        {% if user.id == post.user.id %}
+                            <div class="post-but">
+                                <a href="#" class="edit-post" data-id="{{ post.id }}">Edit</a>
+                            </div>
+                        {% endif %}
+                        <div class="like-but">
+                            <a href="#" class="like-post">
+                                {% if post.is_liked %}
+                                    <img data-id="{{ post.id }}" src="{% static 'network/images/like.png' %}" alt="like button" class="icone-like">
+                                {% else %}
+                                    <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
+                                {% endif %}
+                            </a>
+                            <div id="like-{{ post.id }}">{{ post.likes_post }}</div>
+                        </div>
+                        <div class="post-but">
+                            <a href="#" class="comment-post" data-id="{{ post.id }}">Comment</a>
+                        </div>
+                    </div>
+                </span>
+            </div>
+            {% if user.id == post.user.id %}
+                <div class="post-edit" id="post-edit-{{ post.id }}" style="display: none;">
+                    <form id="form-{{ post.id }}" data-id="{{ post.id }}" class="compose-edit">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea name="content" maxlength="300" id="content-{{ post.id }}" class="form-control">{{ post.content }}</textarea>
+                        </div>
+                        <div id="error-{{ post.id }}" class="error"></div>
+                        <button type="submit" data-intention="edit" data-id="{{ post.id }}" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+{% endblock body %}
+
+{% block script %}
+    <script src="{% static 'network/main.js' %}"></script>
+{% endblock %}
+

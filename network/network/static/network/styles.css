@@ -9,6 +9,10 @@
     width: 300px;
     margin-left: 390px;
 }
+.post-edit {
+    margin: 25px;
+    text-align: center;
+}
 .post {
     margin-left: 200px;
     margin-right: 200px;
@@ -21,15 +25,17 @@ span {
     word-wrap: break-word;
     margin-right: 10px;
 }
-.post-views {
+.post-content {
     display: flex;
+    text-align: left;
     justify-content: space-between;
+    padding: 20px;
+}
+.post-views {
     margin-left: 200px;
     margin-right: 200px;
     margin-top: 10px;
     border: 1px solid thistle;
-    padding: 20px;
-    text-align: left;
 }
 #info-profile {
     text-align: center;
@@ -79,6 +85,16 @@ textarea {
     border: 1px solid black;
     width: 1030px;
     margin-left: 60px;
+    height: 30px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    padding-top: 0px;
+}
+.error {
+    display: none;
+    background-color: red;
+    border: 1px solid black;
+    width: 1070px;
     height: 30px;
     margin-top: 0px;
     margin-bottom: 20px;

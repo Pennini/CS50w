@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -24,6 +24,13 @@ def index(request):
         })
     else:
         return HttpResponseRedirect(reverse("login"))
+
+
+@login_required
+def edit(request, post_id):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
 
 @csrf_exempt
 @login_required
@@ -83,12 +90,12 @@ def like(request, post_id):
 @login_required
 def following(request):
     if request.user.is_authenticated:
-        user = User.objects.get(id=request.user.id)
-        posts = Post.objects.filter(user__in=user.following.values('id')).order_by("-timestamp").all()
+        user = User.objects.get(pk=request.user.id)
+        posts = Post.objects.filter(user__in=user.following.values('following')).order_by("-timestamp").all()
         liked_posts = set(request.user.likes.filter(like=True).values_list('post_id', flat=True))
         for post in posts:
             post.is_liked = post.id in liked_posts
-        return render(request, "network/follow.html", {
+        return render(request, "network/layout_posts.html", {
             "posts": posts
         })
     else:
