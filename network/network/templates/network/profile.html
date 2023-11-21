@@ -8,15 +8,23 @@
         <div>
             <p>Username: {{ user_id.username }}</p>
             <div id="follow-profile">
-                <span>Followers: {{ followers }}</span>
-                <span>Following: {{ following }}</span>
+                <span>Followers:</span>
+                <span id="followers">{{ followers }}</span>
+                <span>Following:</span>
+                <span>{{ following }}</span>
             </div>
         </div>
         <br>
         {% if user.id != user_id.id %}
-            <div class="follow-but">
-                <button class="btn btn-primary" data-userid="{{ user.id }}">Follow</button>
-            </div>
+            {% if follow %}
+                <div class="follow-but">
+                    <button class="btn btn-primary" id="follow-but" data-follow="{{ follow }}" data-following="{{ user_id.id }}" data-userid="{{ user.id }}">Unfollow</button>
+                </div>
+            {% else %}
+                <div class="follow-but">
+                    <button class="btn btn-outline-primary" id="follow-but" data-follow="{{ follow }}" data-following="{{ user_id.id }}" data-userid="{{ user.id }}">Follow</button>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
     {% for post in posts %}
@@ -35,7 +43,11 @@
                     {% endif %}
                     <div class="like-but">
                         <a href="#" class="like-post">
-                            <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
+                            {% if post.is_liked %}
+                                <img data-id="{{ post.id }}" src="{% static 'network/images/like.png' %}" alt="like button" class="icone-like">
+                            {% else %}
+                                <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
+                            {% endif %}
                         </a>
                         <div id="like-{{ post.id }}">{{ post.likes_post }}</div>
                     </div>

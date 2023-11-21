@@ -4,6 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('#compose-post').addEventListener('submit', sendPost);
     }
 
+    if (document.querySelector('#follow-but') != null) {
+        const follow_but = document.querySelector('#follow-but');
+        follow_but.addEventListener('click', (event) => {
+            event.preventDefault();
+            follow(follow_but);
+        });
+    }
+
     window.addEventListener('click', (event) => {
         const element = event.target;
         if (element.className === 'icone-like') {
@@ -14,9 +22,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+function follow(element) {
+    fetch(`/follow/${element.dataset.following}`,{
+        method: "POST",
+        body: JSON.stringify({
+            follow: element.dataset.follow
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        if (result.status === 1) {
+            let followers = parseInt(document.querySelector('#followers').innerHTML);
+            if (element.dataset.follow === "True") {
+                element.className = "btn btn-outline-primary";
+                element.innerHTML = "Follow";
+                element.dataset.follow = "False";
+                followers--;
+            } else {
+                element.className = "btn btn-primary";
+                element.innerHTML = "Unfollow";
+                element.dataset.follow = "True";
+                followers++;
+            }
+            document.querySelector('#followers').innerHTML = followers;
+        }
+    })
+    .catch(error => {
+        console.log('Error:', error);
+    });
+}
+
+
 
 function sendPost(event) {
-    event.preventDefault();
+    event.preventDefault()
     const text = document.querySelector('#text-post').value;
     let error_message = document.querySelector("#error");
     if (!text.trim()) {
@@ -38,8 +78,8 @@ function sendPost(event) {
     } else {
         console.log('Success: Post sent');
         error_message.style.display = 'block';
-        error_message.style.backgroundColor = 'green';
-        error_message.innerHTML = 'Text posted successfully';
+        error_message.style.backgroundColor = 'lightgreen';
+        error_message.innerHTML = 'Posted successfully';
         setTimeout(() => {
             error_message.style.display = 'none';
         }, 4000);

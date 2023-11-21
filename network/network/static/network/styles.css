@@ -1,3 +1,14 @@
+.log-container {
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 75px;
+    padding: 30px;
+    text-align: center;
+}
+.log-container input[type=text], .log-container input[type=password], .log-container input[type=email] {
+    width: 300px;
+    margin-left: 390px;
+}
 .post {
     margin-left: 200px;
     margin-right: 200px;

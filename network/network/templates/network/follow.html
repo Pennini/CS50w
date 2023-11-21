@@ -19,7 +19,11 @@
                     {% endif %}
                     <div class="like-but">
                         <a href="#" class="like-post">
-                            <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
+                            {% if post.is_liked %}
+                                <img data-id="{{ post.id }}" src="{% static 'network/images/like.png' %}" alt="like button" class="icone-like">
+                            {% else %}
+                                <img data-id="{{ post.id }}" src="{% static 'network/images/unlike.png' %}" alt="like button" class="icone-like">
+                            {% endif %}
                         </a>
                         <div id="like-{{ post.id }}">{{ post.likes_post }}</div>
                     </div>
