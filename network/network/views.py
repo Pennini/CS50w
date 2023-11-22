@@ -8,6 +8,7 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.core.paginator import Paginator
 
 from .models import User, Post, Likes, Follow
 
@@ -16,11 +17,16 @@ def index(request):
     if request.user.is_authenticated:
         posts = Post.objects.order_by("-timestamp").all()
         
+        p = Paginator(posts, 10)
+        page_number = request.GET.get('page')
+        page_obj = p.get_page(page_number)
+        
         liked_posts = set(request.user.likes.filter(like=True).values_list('post_id', flat=True))
-        for post in posts:
+        for post in page_obj:
             post.is_liked = post.id in liked_posts
         return render(request, "network/index.html", {
-            "posts": posts
+            "page_obj": page_obj,
+            "page_count": range(1, p.count + 1)
         })
     else:
         return HttpResponseRedirect(reverse("login"))
@@ -101,11 +107,17 @@ def following(request):
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.id)
         posts = Post.objects.filter(user__in=user.following.values('following')).order_by("-timestamp").all()
+
+        p = Paginator(posts, 10)
+        page_number = request.GET.get('page')
+        page_obj = p.get_page(page_number)
+
         liked_posts = set(request.user.likes.filter(like=True).values_list('post_id', flat=True))
-        for post in posts:
+        for post in page_obj:
             post.is_liked = post.id in liked_posts
         return render(request, "network/layout_posts.html", {
-            "posts": posts
+            "page_obj": page_obj,
+            "page_count": range(1, p.count + 1)
         })
     else:
         return HttpResponseRedirect(reverse("login"))
@@ -116,6 +128,11 @@ def profile(request, user_id):
     posts = Post.objects.filter(user=user_id).order_by("-timestamp").all()
     followers = Follow.objects.filter(following=user_id).count()
     following = Follow.objects.filter(user=user_id).count()
+
+    p = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+
     liked_posts = set(request.user.likes.filter(like=True).values_list('post_id', flat=True))
     for post in posts:
         post.is_liked = post.id in liked_posts
@@ -123,7 +140,8 @@ def profile(request, user_id):
         if request.user == user_id:
             return render(request, "network/profile.html", {
                 "user_id": user,
-                "posts": posts,
+                "page_obj": page_obj,
+                "page_count": range(1, p.count + 1),
                 "followers": followers,
                 "following": following
             })
@@ -135,7 +153,8 @@ def profile(request, user_id):
                 follow = False
             return render(request, "network/profile.html", {
                 "user_id": user,
-                "posts": posts,
+                "page_obj": page_obj,
+                "page_count": range(1, p.count + 1),
                 "followers": followers,
                 "following": following,
                 "follow": follow

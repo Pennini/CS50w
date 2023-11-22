@@ -131,25 +131,28 @@ function sendPost(event) {
         }, 3000);
         return;
     } else {
-        console.log('Success: Post sent');
-        error_message.style.display = 'block';
-        error_message.style.backgroundColor = 'lightgreen';
-        error_message.innerHTML = 'Posted successfully';
-        setTimeout(() => {
-            error_message.style.display = 'none';
-        }, 3000);
+        fetch('/posts', {
+            method: 'POST',
+            body: JSON.stringify({
+                text: text
+            })
+          })
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+            document.querySelector('#text-post').value = "";
+            console.log('Success: Post sent');
+            error_message.style.display = 'block';
+            error_message.style.backgroundColor = 'lightgreen';
+            error_message.innerHTML = 'Posted successfully';
+            setTimeout(() => {
+                error_message.style.display = 'none';
+            }, 3000);
+          })
+          .catch(error => {
+              console.log('Error:', error);
+          });
     }
-    fetch('/posts', {
-        method: 'POST'
-      })
-      .then(response => response.json())
-      .then(result => {
-          console.log(result);
-          document.querySelector('#text-post').value = "";
-      })
-      .catch(error => {
-          console.log('Error:', error);
-      });
 }
 
 function changeImage(element) {
