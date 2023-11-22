@@ -64,7 +64,9 @@ function editPost(element) {
         .then(result => {
             console.log(result);
             document.querySelector(`#post-edit-${element}`).style.display = "none";
-            document.querySelector(`#post-content-${element}`).style.display = "block";
+            document.querySelector(`#post-content-${element}`).style.display = "flex";
+            document.querySelector(`#textarea-${element}`).innerHTML = text;
+
         })
         .catch(error => {
             console.log('Error:', error);

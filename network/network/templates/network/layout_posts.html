@@ -8,7 +8,7 @@
             <div class="post-content" id="post-content-{{ post.id }}">
                 <span>
                     <a href="{% url 'profile' post.user.id %}" class="user-id"><h4>{{ post.user }}</h4></a>
-                    <p>{{ post.content }}</p>
+                    <p id="textarea-{{ post.id }}">{{ post.content }}</p>
                     <p class="timestamp">{{ post.timestamp }}</p>
                 </span>
                 <span>

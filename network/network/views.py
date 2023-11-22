@@ -25,11 +25,20 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse("login"))
 
-
+@csrf_exempt
 @login_required
 def edit(request, post_id):
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body).get('text')
+    if data:
+        post = Post.objects.get(pk=post_id)
+        post.content = data
+        post.save()
+        return JsonResponse({"message": "Edit post succesfully"}, status=201)
+    
+    return JsonResponse({"error": "Could not edit the post"}, status=201)
 
 
 @csrf_exempt
