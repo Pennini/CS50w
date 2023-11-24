@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{% static 'system/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'system/main.js' %}"></script>
+  </head>
+  <body>
+    <div class="row">
+        <div class="sidebar col-lg-2 col-md-3">
+            <h2>System</h2>
+            <br>
+            {% if user.is_authenticated %}
+                <form action="#" method="get">
+                    {% csrf_token %}
+                    <input class="search" type="text" name="q" placeholder="Search">
+                    <input type="submit" style="visibility: hidden;">
+                </form>
+                <div>
+                    <a href="#">{{ user.username }}</a>
+                </div>
+                <div>
+                    <a href="#">Calendar</a>
+                </div>
+                <div>
+                    <a href="#">Availability</a>
+                </div>
+                {% if user.is_staff == 1 %}
+                    <div>
+                        <a href="#">Create Project</a>
+                    </div>
+                    <div>
+                        <a href="#">Create Event</a>
+                    </div>
+                    <div>
+                        <a href="#">Create User</a>
+                    </div>
+                {% endif %}
+                <div>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </div>
+            {% else %}
+                <div>
+                    <a href="{% url 'login' %}">Log In</a>
+                </div>
+            {% endif %}
+            {% block nav %}
+            {% endblock %}
+        </div>
+        <div class="main col-lg-10 col-md-9">
+            {% block body %}
+            {% endblock body %}
+            {% block list %}
+            {% endblock list %}
+        </div>
+    </div>
+
+  </body>
+</html>
