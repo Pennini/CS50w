@@ -1,0 +1,35 @@
+.log-container {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 75px;
+    padding: 30px;
+    text-align: center;
+}
+.log-container input[type=text], .log-container input[type=password], .log-container input[type=email] {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.main {
+    padding: 10px;
+    background-color: gainsboro;
+}
+.search {
+    width: 100%;
+    font-size: 15px;
+    line-height: 15px;
+}
+.sidebar {
+    background-color: darkgray;
+    height: 100vh;
+    padding: 20px;
+    text-align: center;
+}
+.sidebar a {
+    color: #303030;
+    text-decoration: none;
+    font-size: 20px;
+}
+.sidebar h2, .sidebar div {
+    margin-top: 5px;
+}
