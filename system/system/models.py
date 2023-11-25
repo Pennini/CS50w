@@ -25,7 +25,7 @@ AREA_CHOICES = (
     ("project-management", "Project Management"),
 )
 
-OFFICE_CHOICES = (
+POSITION_CHOICES = (
     ("member", "Member"),
     ("trainee", "Trainee"),
     ("director", "Director"),
@@ -56,17 +56,18 @@ class Area(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class Office(models.Model):
-    name = models.CharField(max_length=30, choices=OFFICE_CHOICES)
+class Position(models.Model):
+    name = models.CharField(max_length=30, choices=POSITION_CHOICES)
     description = models.TextField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
 
 class User(AbstractUser):
-    office = models.ForeignKey("Office", on_delete=models.CASCADE, related_name="user_office", default=None, blank=True, null=True)
+    position = models.ForeignKey("Position", on_delete=models.CASCADE, related_name="user_position", default=None, blank=True, null=True)
     group = models.ForeignKey("Group", on_delete=models.CASCADE, related_name="user_group", blank=True, null=True, default=None)
     area = models.ForeignKey("Area", on_delete=models.CASCADE, related_name="user_area", default=None, blank=True, null=True)
+    biography = models.TextField(max_length=250, blank=True, null=True)
 
     def __str__(self):
         return f"{self.username}"

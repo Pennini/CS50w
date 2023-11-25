@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from .models import User, Group, Area, Office, Event, Project, Meeting, Availabilty
+from .models import User, Group, Area, Position, Event, Project, Meeting, Availabilty
 
 # Create your views here.
 @login_required(login_url="login")

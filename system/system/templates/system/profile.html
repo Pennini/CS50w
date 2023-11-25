@@ -4,14 +4,91 @@
 {% block body %}
 
     <div>
-        <div>
-            <img src="{% static 'system/images/avatar.png' %}" alt="icone-profile">
+        <div class="icone">
+            <img src="{% static 'system/images/avatar.jpg' %}" alt="icone-profile" class="img-fluid">
         </div>
-        <div>
-            <p>Username</p>
-            <p>Office:</p>
-            <p>Area:</p>
-            <p>Group:</p>
+        <div class="information">
+            <h4>{{ user.username }}</h4>
+            <br>
+            {% if user.position %}
+                <span>
+                    <strong>Position:</strong> {{ user.position }}
+                </span>
+            {% endif %}
+            {% if user.area %}
+                <span>
+                    <strong>Area:</strong> {{ user.area }}
+                </span>
+            {% endif %}
+            {% if user.group %}
+                <span>
+                    <strong>Group:</strong> {{ user.group }}
+                </span>
+            {% endif %}
+            <div>
+                {% if user.is_authenticated and not user.biography %}
+                    <div class="bio-create" id="bio-create-{{ user.id }}">
+                        <form id="form-{{ user.id }}" data-id="{{ user.id }}" class="compose-create">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="content" maxlength="250" id="content-{{ user.id.id }}" class="form-control" placeholder="Say something about you"></textarea>
+                            </div>
+                            <div id="error-{{ user.id }}" class="error"></div>
+                            <button type="submit" data-intention="create" data-id="{{ user.id }}" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="bio-edit" id="bio-edit-{{ user.id }}" style="display: none;">
+                        <form id="form-{{ user.id }}" data-id="{{ user.id }}" class="compose-edit">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="content" maxlength="250" id="content-{{ user.id.id }}" class="form-control">{{ user.biography }}</textarea>
+                            </div>
+                            <div id="error-{{ user.id }}" class="error"></div>
+                            <button type="submit" data-intention="edit" data-id="{{ user.id }}" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-9" id="projects-views">
+            <h4>Projects:</h4>
+            <br>
+            <ul class="list-group">
+                {% if projects %}
+                    {% for project in projects %}
+                        <li class="list-group-item">{{ project }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">No projects</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-sm-2">
+            <div class="score">
+                <h4>Score:</h4>
+                <br>
+                {% if score %}
+                    <p>{{ score }}</p>
+                {% else %}
+                    <p>0</p>
+                {% endif %}
+            </div>
+            <div class="score">
+                <h4>Events:</h4>
+                <br>
+                <ul class="list-group">
+                    {% if events %}
+                        {% for event in events %}
+                            <li class="list-group-item">{{ event }}</li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item">No events</li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 
