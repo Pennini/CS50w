@@ -10,6 +10,10 @@
     margin-left: auto;
     margin-right: auto;
 }
+.search-div {
+    margin-left: auto;
+    margin-right: auto;
+}
 .main {
     padding: 10px;
     background-color: gainsboro;
@@ -30,6 +34,9 @@
     text-decoration: none;
     font-size: 20px;
 }
-.sidebar h2, .sidebar div {
+.sidebar h2 {
     margin-top: 5px;
+}
+.sidebar div {
+    margin-top: 20px;
 }

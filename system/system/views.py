@@ -15,17 +15,21 @@ from .models import User, Group, Area, Office, Event, Project, Meeting, Availabi
 def index(request):
     return render(request, "system/index.html")
 
+@login_required(login_url="login")
+def profile(request):
+    return render(request, "system/profile.html")
+
 
 def login_view(request):
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
-        user = authenticate(request, email=email, password=password)
-
-        if user is not None:
+        
+        try:
+            user = User.objects.get(email=email)
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
-        else:
+        except User.DoesNotExist:
             return render(request, "system/login.html", {
                 "message": "Invalid email and/or password."
             })
