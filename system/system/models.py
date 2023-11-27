@@ -78,8 +78,7 @@ class User(AbstractUser):
         return f"{self.username}"
 
 class Event(models.Model):
-    group = models.ForeignKey("Group", on_delete=models.CASCADE, related_name="event_group", blank=True, null=True, default=None)
-    area = models.ForeignKey("Area", on_delete=models.CASCADE, related_name="event_area", default=None, blank=True, null=True)
+    area = models.ForeignKey("Area", on_delete=models.CASCADE, related_name="event_area")
     responsible = models.ForeignKey("User", on_delete=models.CASCADE, related_name="event_responsible")
     members_planned = models.ManyToManyField("User", blank=True, related_name="event_members_planned")
     members_present = models.ManyToManyField("User", blank=True, related_name="event_members_present")
@@ -94,8 +93,7 @@ class Event(models.Model):
         return f"{self.name}"
 
 class Project(models.Model):
-    group = models.ForeignKey("Group", on_delete=models.CASCADE, related_name="project_group", default=None, blank=True, null=True)
-    area = models.ForeignKey("Area", on_delete=models.CASCADE, related_name="project_area", default=None, blank=True, null=True)
+    group = models.ForeignKey("Group", on_delete=models.CASCADE, related_name="project_group")
     responsible = models.ForeignKey("User", on_delete=models.CASCADE, related_name="project_responsible")
     members = models.ManyToManyField("User", blank=True, related_name="project_members")
     name = models.CharField(max_length=50)

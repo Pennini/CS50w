@@ -10,4 +10,5 @@ urlpatterns = [
     path("create-view/<str:intention>", views.create_view, name="create_view"),
     path("create/<str:intention>", views.create, name="create"),
     path("calendar", views.calendar, name="calendar"),
+    path("availability", views.availability, name="availability"),
 ]

@@ -1,0 +1,35 @@
+{% extends "system/layout.html" %}
+
+{% block body %}
+
+    <div>
+        <div>
+            <h4 class="day-calendar">Availability</h4>
+        </div>
+        <table id="calendar">
+            <tr class="header-calendar">
+                <th></th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+                <th>Sun</th>
+            </tr>
+            {% for start, finish in hour_choices %}
+                <tr>
+                    <td>{{ start }} - {{ finish }}</td>
+                    <td data-day="sun"></td>
+                    <td data-day="mon"></td>
+                    <td data-day="tue"></td>
+                    <td data-day="wed"></td>
+                    <td data-day="thu"></td>
+                    <td data-day="fri"></td>
+                    <td data-day="sat"></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock body %}
