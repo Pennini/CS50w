@@ -2,13 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-GROUP_CHOICES = (
-    ("artificial-intelligence", "Artificial Intelligence"),
-    ("cybersecurity", "Cybersecurity"),
-    ("data-science", "Data Science"),
-    ("web-development", "Web Development"),
-)
-
 DAY_CHOICES = (
     ("monday", "Monday"),
     ("tuesday", "Tuesday"),
@@ -17,12 +10,6 @@ DAY_CHOICES = (
     ("friday", "Friday"),
     ("saturday", "Saturday"),
     ("sunday", "Sunday"),
-)
-
-AREA_CHOICES = (
-    ("human-resources", "Human Resources"),
-    ("marketing", "Marketing"),
-    ("project-management", "Project Management"),
 )
 
 POSITION_CHOICES = (
@@ -36,6 +23,16 @@ POSITION_CHOICES = (
 
 # Create your models here.
 class Group(models.Model):
+    ai = "Artificial Intelligence"
+    cs = "Cybersecurity"
+    ds = "Data Science"
+    wd = "Web Development"
+    GROUP_CHOICES = (
+        (ai, "Artificial Intelligence"),
+        (cs, "Cybersecurity"),
+        (ds, "Data Science"),
+        (wd, "Web Development"),
+    )
     name = models.CharField(max_length=30, choices=GROUP_CHOICES)
     description = models.TextField(max_length=500, blank=True, null=True)
     start_time = models.TimeField()
@@ -47,6 +44,14 @@ class Group(models.Model):
 
 
 class Area(models.Model):
+    rh = "Human Resources"
+    mkt = "Marketing"
+    project = "Project Management"
+    AREA_CHOICES = (
+        (rh, "Human Resources"),
+        (mkt, "Marketing"),
+        (project, "Project Management"),
+    )
     name = models.CharField(max_length=30, choices=AREA_CHOICES)
     description = models.TextField(max_length=500, blank=True, null=True)
     start_time = models.TimeField()

@@ -19,6 +19,26 @@ def index(request):
 def profile(request):
     return render(request, "system/profile.html")
 
+@login_required(login_url="login")
+def calendar(request):
+    return render(request, "system/calendar.html")
+
+@login_required(login_url="login")
+def create_view(request, intention):
+    if request.user.is_staff and intention in ["user", "event", "project"]:
+        return render(request, "system/create.html", {
+            "intention": intention
+        })
+    else:
+        return render(request, "system/create.html", {
+            "message": intention
+        })
+
+
+@login_required(login_url="login")
+def create(request, intention):
+    return HttpResponseRedirect(reverse('create_view', args=[intention]))
+
 
 def login_view(request):
     if request.method == "POST":
@@ -26,10 +46,16 @@ def login_view(request):
         password = request.POST["password"]
         
         try:
-            user = User.objects.get(email=email)
+            username = User.objects.get(email=email).username
+        except User.DoesNotExist:
+            return render(request, "system/login.html", {
+                "message": "Invalid email and/or password."
+            })
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
-        except User.DoesNotExist:
+        else:
             return render(request, "system/login.html", {
                 "message": "Invalid email and/or password."
             })

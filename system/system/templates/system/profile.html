@@ -12,7 +12,7 @@
             <br>
             {% if user.position %}
                 <span>
-                    <strong>Position:</strong> {{ user.position }}
+                    <strong>Position:</strong> {{ user.position|title }}
                 </span>
             {% endif %}
             {% if user.area %}

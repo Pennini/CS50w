@@ -13,7 +13,7 @@
   <body>
     <div class="row">
         <div class="sidebar col-lg-2 col-md-3">
-            <h2>System</h2>
+            <a href="{% url 'index' %}"><h2>System</h2></a>
             <br>
             {% if user.is_authenticated %}
                 <form action="#" method="get">
@@ -25,20 +25,20 @@
                     <a href="{% url 'profile' %}">{{ user.username }}</a>
                 </div>
                 <div>
-                    <a href="#">Calendar</a>
+                    <a href="{% url 'calendar' %}">Calendar</a>
                 </div>
                 <div>
                     <a href="#">Availability</a>
                 </div>
                 {% if user.is_staff == 1 %}
                     <div>
-                        <a href="#">Create Project</a>
+                        <a href="{% url 'create_view' 'user' %}">Create User</a>
                     </div>
                     <div>
-                        <a href="#">Create Event</a>
+                        <a href="{% url 'create_view' 'project' %}">Create Project</a>
                     </div>
                     <div>
-                        <a href="#">Create User</a>
+                        <a href="{% url 'create_view' 'event' %}">Create Event</a>
                     </div>
                 {% endif %}
                 <div>
@@ -55,8 +55,6 @@
         <div class="main col-lg-10 col-md-9">
             {% block body %}
             {% endblock body %}
-            {% block list %}
-            {% endblock list %}
         </div>
     </div>
 
