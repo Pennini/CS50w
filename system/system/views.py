@@ -9,11 +9,6 @@ from django.db import IntegrityError
 import json
 from calendar import Calendar, month_name
 import datetime as dt
-from django.template.defaulttags import register
-
-@register.filter
-def get_item(dictionary, key):
-    return dictionary.get(key)
 
 from .models import User, Group, Area, Position, Event, Project, Meeting, Availabilty
 
@@ -32,6 +27,26 @@ def index(request):
 def profile(request):
     return render(request, "system/profile.html")
 
+@csrf_exempt
+@login_required(login_url="login")
+def bio(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        text = data.get("text")
+        
+        if text == "":
+            return JsonResponse({"message": "Bio cannot be empty."})
+        
+        if text:
+            user = User.objects.get(pk=request.user.id)
+            user.biography = text
+            user.save()
+        else:
+            return JsonResponse({"message": "Bio cannot be empty."})
+
+        return JsonResponse({"message": "Bio saved."})
+    return render(request, "system/profile.html")
+
 @login_required(login_url="login")
 def availability(request):
     HOUR_CHOICES = [(f"{i}:00", f"{i + 1}:00") for i in range(9, 21)]
@@ -43,10 +58,12 @@ def availability(request):
 def calendar(request):
     month = dt.datetime.now().month
     year = dt.datetime.now().year
-    cal = Calendar().monthdayscalendar(year, month)
+    cal = Calendar().monthdays2calendar(year, month)
 
     projects = Project.objects.filter(start_day__month=month, start_day__year=year).order_by("start_day")
     events = Event.objects.filter(start_day__month=month, start_day__year=year).order_by("start_day")
+    areas = Area.objects.all().order_by("meeting_day")
+    groups = Group.objects.all().order_by("meeting_day")
 
     event_dict = {}
     for event in events:
@@ -63,15 +80,31 @@ def calendar(request):
             project_dict[day_str] = [project]
         else:
             project_dict[day_str].append(project)
-    print(event_dict)
-    print(project_dict)
+    
+    area_dict = {}
+    for area in areas:
+        day_str = str(area.meeting_day)
+        if day_str not in area_dict:
+            area_dict[day_str] = [area]
+        else:
+            area_dict[day_str].append(area)
+    
+    group_dict = {}
+    for group in groups:
+        day_str = str(group.meeting_day)
+        if day_str not in group_dict:
+            group_dict[day_str] = [group]
+        else:
+            group_dict[day_str].append(group)
 
     return render(request, "system/calendar.html", {
         "calendar": cal,
         "month": month_name[month],
         "year": year,
         "event_dict": event_dict,
-        "project_dict": project_dict
+        "project_dict": project_dict,
+        "area_dict": area_dict,
+        "group_dict": group_dict
     })
 
 @login_required(login_url="login")

@@ -26,26 +26,39 @@
                 </span>
             {% endif %}
             <div>
-                {% if user.is_authenticated and not user.biography %}
-                    <div class="bio-create" id="bio-create-{{ user.id }}">
-                        <form id="form-{{ user.id }}" data-id="{{ user.id }}" class="compose-create">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <textarea name="content" maxlength="250" id="content-{{ user.id.id }}" class="form-control" placeholder="Say something about you"></textarea>
-                            </div>
-                            <div id="error-{{ user.id }}" class="error"></div>
-                            <button type="submit" data-intention="create" data-id="{{ user.id }}" class="btn btn-primary">Save</button>
-                        </form>
+                {% if user.is_authenticated %}
+                        {% if user.biography %}
+                            <div class="bio-show" id="bio-show">
+                                <div>
+                                    <p id="content-bio">{{ user.biography }}</p>
+                                </div>
+                        {% else %}
+                            <div class="bio-show" id="bio-show" style="display: none;">
+                                <div>
+                                    <p id="content-bio"></p>
+                                </div>
+                        {% endif %}
+                        <div>
+                            <a href="" id="button-bio-edit">Edit</a>
+                        </div>
                     </div>
-                {% else %}
-                    <div class="bio-edit" id="bio-edit-{{ user.id }}" style="display: none;">
-                        <form id="form-{{ user.id }}" data-id="{{ user.id }}" class="compose-edit">
+                    {% if user.biography %}
+                        <div class="bio-edit" id="bio-form" style="display: none;">
+                            <form id="form-compose-bio" data-intention="edit" class="compose-edit">
+                    {% else %}
+                        <div class="bio-edit" id="bio-form">
+                            <form id="form-compose-bio" data-intention="create" class="compose-edit">
+                    {% endif %}
                             {% csrf_token %}
                             <div class="form-group">
-                                <textarea name="content" maxlength="250" id="content-{{ user.id.id }}" class="form-control">{{ user.biography }}</textarea>
+                                {% if user.biography %}
+                                    <textarea name="content" maxlength="300" id="content-bio-compose" class="form-control">{{ user.biography }}</textarea>
+                                {% else %}
+                                    <textarea name="content" maxlength="300" id="content-bio-compose" class="form-control" placeholder="Say something about you"></textarea>
+                                {% endif %}
                             </div>
-                            <div id="error-{{ user.id }}" class="error"></div>
-                            <button type="submit" data-intention="edit" data-id="{{ user.id }}" class="btn btn-primary">Save</button>
+                            <div id="error" class="error" style="display: none; margin-bottom: 10px;"></div>
+                            <input type="submit" class="btn btn-primary" value="Save"></input>
                         </form>
                     </div>
                 {% endif %}

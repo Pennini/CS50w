@@ -19,7 +19,7 @@
             </tr>
             {% for cal in calendar %}
                 <tr>
-                {% for day in cal %}
+                {% for day, weekday in cal %}
                     {% if day == 0 %}
                         <td></td>
                     {% else %}
@@ -28,21 +28,47 @@
                                 {{ day }}
                             </span>
                             <span>
-                                {% if day in project_dict %}
-                                    {% with project_list=project_dict|get_item:day %}
-                                        {% for project in project_list %}
-                                            <a href="#">{{ project.name }}</a>
-                                        {% endfor %}
-                                    {% endwith %}
-                                {% endif %}
+                                <ul>
+                                    {% if group_dict|verify:weekday %}
+                                        {% with group_list=group_dict|get_item:weekday %}
+                                            {% for group in group_list %}
+                                                <li>
+                                                    <a href="#">{{ group.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    {% endif %}
 
-                                {% if day in event_dict %}
-                                    {% with event_list=event_dict|get_item:day %}
-                                        {% for event in event_list %}
-                                            <a href="#">{{ event.name }}</a>
-                                        {% endfor %}
-                                    {% endwith %}
-                                {% endif %}
+                                    {% if area_dict|verify:weekday %}
+                                        {% with area_list=area_dict|get_item:weekday %}
+                                            {% for area in area_list %}
+                                                <li>
+                                                    <a href="#">{{ area.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    {% endif %}
+
+                                    {% if event_dict|verify:day %}
+                                        {% with event_list=event_dict|get_item:day %}
+                                            {% for event in event_list %}
+                                                <li>
+                                                    <a href="#">{{ event.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    {% endif %}
+
+                                    {% if project_dict|verify:day %}
+                                        {% with project_list=project_dict|get_item:day %}
+                                            {% for project in project_list %}
+                                                <li>
+                                                    <a href="#">{{ project.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    {% endif %}
+                                </ul>
                             </span>
                         </td>
                     {% endif %}
