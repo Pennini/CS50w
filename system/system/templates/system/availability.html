@@ -6,8 +6,8 @@
         <div>
             <h4 class="day-calendar">Availability</h4>
         </div>
-        <table id="calendar">
-            <tr class="header-calendar">
+        <table id="calendar-ava">
+            <tr class="header-calendar-ava">
                 <th></th>
                 <th>Mon</th>
                 <th>Tue</th>
@@ -20,13 +20,13 @@
             {% for start, finish in hour_choices %}
                 <tr>
                     <td>{{ start }} - {{ finish }}</td>
-                    <td data-day="sun"></td>
-                    <td data-day="mon"></td>
-                    <td data-day="tue"></td>
-                    <td data-day="wed"></td>
-                    <td data-day="thu"></td>
-                    <td data-day="fri"></td>
-                    <td data-day="sat"></td>
+                    <td class="day-hour" data-day="sun" data-hour="{{ start }}"></td>
+                    <td class="day-hour" data-day="mon" data-hour="{{ start }}"></td>
+                    <td class="day-hour" data-day="tue" data-hour="{{ start }}"></td>
+                    <td class="day-hour" data-day="wed" data-hour="{{ start }}"></td>
+                    <td class="day-hour" data-day="thu" data-hour="{{ start }}"></td>
+                    <td class="day-hour" data-day="fri" data-hour="{{ start }}"></td>
+                    <td class="day-hour" data-day="sat" data-hour="{{ start }}"></td>
                 </tr>
             {% endfor %}
         </table>

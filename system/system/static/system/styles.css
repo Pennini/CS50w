@@ -1,6 +1,28 @@
 body {
     font-family: 'Roboto' sans-serif;
 }
+
+li {
+    display: inline-block;
+    max-width:80%;
+    word-break:break-all;
+    border: 1px solid #303030;
+    text-align: center;
+    border-radius: 10px;
+}
+li a {
+    color: #303030;
+    text-decoration: none;
+}
+li a:hover {
+    color: white;
+    text-decoration: none;
+}
+.members-check {
+    display: inline-block;
+    margin-left: 25px;
+    margin-top: 10px;
+}
 #member-table {
     margin-top: 5px;
     border: 1px solid #303030;
@@ -25,29 +47,32 @@ body {
     margin-bottom: 10px;
     margin-left: 5%;
 }
-#calendar {
+#calendar, #calendar-ava {
     margin: 0 auto;
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 90%;
 }
-#calendar td, #calendar th {
+#calendar td, #calendar th, #calendar-ava td, #calendar-ava th {
     border: 1px solid #303030;
     padding: 8px;
+}
+#calendar-ava td {
+    background-color: white;
 }
 
 #calendar tr:nth-child(even){background-color: #f2f2f2;}
 
 #calendar td:hover {background-color: gray;}
 
-#calendar th {
+#calendar th, #calendar-ava th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
     background-color: dimgray;
     color: white;
 }
-.header-calendar  {
+.header-calendar, .header-calendar-ava {
     text-align: center;
     margin-bottom: 20px;
     border: 1px solid #303030;

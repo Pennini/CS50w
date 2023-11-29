@@ -1,4 +1,5 @@
 {% extends "system/layout.html" %}
+{% load custom_tags %}
 
 {% block body %}
 
@@ -22,7 +23,28 @@
                     {% if day == 0 %}
                         <td></td>
                     {% else %}
-                        <td>{{ day }}</td>
+                        <td>
+                            <span>
+                                {{ day }}
+                            </span>
+                            <span>
+                                {% if day in project_dict %}
+                                    {% with project_list=project_dict|get_item:day %}
+                                        {% for project in project_list %}
+                                            <a href="#">{{ project.name }}</a>
+                                        {% endfor %}
+                                    {% endwith %}
+                                {% endif %}
+
+                                {% if day in event_dict %}
+                                    {% with event_list=event_dict|get_item:day %}
+                                        {% for event in event_list %}
+                                            <a href="#">{{ event.name }}</a>
+                                        {% endfor %}
+                                    {% endwith %}
+                                {% endif %}
+                            </span>
+                        </td>
                     {% endif %}
                 {% endfor %}
                 </tr>

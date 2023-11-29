@@ -81,13 +81,13 @@ class Event(models.Model):
     area = models.ForeignKey("Area", on_delete=models.CASCADE, related_name="event_area")
     responsible = models.ForeignKey("User", on_delete=models.CASCADE, related_name="event_responsible")
     members_planned = models.ManyToManyField("User", blank=True, related_name="event_members_planned")
-    members_present = models.ManyToManyField("User", blank=True, related_name="event_members_present")
+    members_present = models.ManyToManyField("User", blank=True, related_name="event_members_present", default=None, null=True)
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=500)
     start_day = models.DateTimeField()
-    end_day = models.DateTimeField()
+    end_day = models.DateTimeField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
-    category = models.CharField(max_length=20)
+    category = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
