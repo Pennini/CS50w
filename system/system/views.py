@@ -24,6 +24,21 @@ def index(request):
     })
 
 @login_required(login_url="login")
+def search(request):
+    search = request.GET.get("q")
+    if search:
+        projects = Project.objects.filter(name__icontains=search).order_by("-start_day")
+        events = Event.objects.filter(name__icontains=search).order_by("-start_day")
+        users = User.objects.filter(username__icontains=search)
+        return render(request, "system/search.html", {
+            "projects": projects,
+            "events": events,
+            "users": users
+        })
+    else:
+        return HttpResponseRedirect(reverse("index"))
+
+@login_required(login_url="login")
 def profile(request):
     return render(request, "system/profile.html")
 
@@ -47,12 +62,63 @@ def bio(request):
         return JsonResponse({"message": "Bio saved."})
     return render(request, "system/profile.html")
 
+@csrf_exempt
 @login_required(login_url="login")
 def availability(request):
-    HOUR_CHOICES = [(f"{i}:00", f"{i + 1}:00") for i in range(9, 21)]
-    return render(request, "system/availability.html", {
-        "hour_choices": HOUR_CHOICES
-    })
+    HOUR_CHOICES = [(dt.time(i).strftime('%H:%M'), dt.time(i + 1).strftime('%H:%M')) for i in range(9, 21)]
+    ava = Availabilty.objects.filter(user=request.user).order_by("day", "start_time")
+
+    HOUR_DICT = {}
+    for hour in HOUR_CHOICES:
+        HOUR_DICT[(hour[0], hour[1])] = {day: status for day, status in ava.filter(start_time=hour[0]).values_list("day", "status")}
+        
+    if request.method == "POST":
+        data = json.loads(request.body)
+        day = data.get("day")
+        start = data.get("start")
+        end = data.get("end")
+
+        print(day, start, end)
+
+        if not day or not start or not end:
+            return JsonResponse({"message": "Please fill all the fields."})
+        
+        try:
+            day = int(day)
+        except ValueError:
+            return JsonResponse({"message": "Invalid date."})
+        
+        try:
+            start = dt.datetime.strptime(start, "%H:%M").strftime("%H:%M")
+        except ValueError:
+            return JsonResponse({"message": "Invalid start time."})
+        
+        try:
+            end = dt.datetime.strptime(end, "%H:%M").strftime("%H:%M")
+        except ValueError:
+            return JsonResponse({"message": "Invalid end time."})
+        
+        if start >= end:
+            return JsonResponse({"message": "The ending time must be after the starting time."})
+        
+        print(day, start, end)
+        
+        if Availabilty.objects.filter(user=request.user, day=day, start_time=start, end_time=end).exists():
+            availability = Availabilty.objects.get(user=request.user, day=day, start_time=start, end_time=end)
+            availability.status = 0 if availability.status == 2 else availability.status + 1
+            print(f"Status: {availability.status}")
+            availability.save()
+            return JsonResponse({"message": "You succesfully updated availability for this day.", "status": availability.status})
+        else:
+            availability = Availabilty.objects.create(user=request.user, day=day, start_time=start, end_time=end)
+            availability.status = 0
+            print(f"Status: {availability.status}")
+            availability.save()
+            return JsonResponse({"message": "Availability saved.", "status": availability.status})
+    else:
+        return render(request, "system/availability.html", {
+            "hour_choices": HOUR_DICT
+        })
 
 @login_required(login_url="login")
 def calendar(request):

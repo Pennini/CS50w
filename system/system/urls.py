@@ -12,4 +12,5 @@ urlpatterns = [
     path("calendar", views.calendar, name="calendar"),
     path("availability", views.availability, name="availability"),
     path("bio", views.bio, name="bio"),
+    path("search", views.search, name="search"),
 ]

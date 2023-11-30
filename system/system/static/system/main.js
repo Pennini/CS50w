@@ -6,29 +6,52 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault()
             const computedStyle = window.getComputedStyle(element);
             const bgcolor = computedStyle.backgroundColor;
-            console.log(bgcolor);
-            if (bgcolor === 'rgb(255, 255, 255)' || bgcolor === 'white' || bgcolor === 'rgb(0, 128, 0)' || bgcolor === 'green') {
-                element.style.backgroundColor = 'red';
-            } else if (bgcolor === 'rgb(255, 0, 0)' || bgcolor === 'red') {
-                element.style.backgroundColor = 'yellow';
-            } else if (bgcolor === 'rgb(255, 255, 0)' || bgcolor === 'yellow') {
-                element.style.backgroundColor = 'green';
-            }
+            alterAvailability(element);
        }
     });
-
-    document.querySelector('#form-compose-bio').addEventListener('submit', (event) => {
-        event.preventDefault();
-        changeBio();
-    });
-
-    document.querySelector("#button-bio-edit").addEventListener('click', (event) => {
-        event.preventDefault();
-        document.querySelector('#bio-show').style.display = 'none';
-        document.querySelector('#bio-form').style.display = 'block';
-    });
+    if (document.querySelector('#form-compose-bio')) {
+        document.querySelector('#form-compose-bio').addEventListener('submit', (event) => {
+            event.preventDefault();
+            changeBio();
+        });
+    }
+    if (document.querySelector("#button-bio-edit")) {
+        document.querySelector("#button-bio-edit").addEventListener('click', (event) => {
+            event.preventDefault();
+            document.querySelector('#bio-show').style.display = 'none';
+            document.querySelector('#bio-form').style.display = 'block';
+        });
+    }
 
 });
+
+function alterAvailability(element) {
+    console.log(element);
+    const day = element.dataset.day;
+    const start = element.dataset.start;
+    const end = element.dataset.end;
+    fetch('/availability', {
+        method: 'POST',
+        body: JSON.stringify({
+            day: day,
+            start: start,
+            end: end,
+        })
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.status === 0) {
+            element.style.backgroundColor = 'red';
+        } else if (result.status === 1) {
+            element.style.backgroundColor = 'yellow';
+        } else if (result.status === 2) {
+            element.style.backgroundColor = 'green';
+        }
+      })
+      .catch(error => {
+          console.log('Error:', error);
+      });
+}
 
 function changeBio() {
     const text = document.querySelector('#content-bio-compose').value;
