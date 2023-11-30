@@ -4,8 +4,21 @@
 {% block body %}
 
     <div>
-        <div>
-            <h4 class="day-calendar">{{ month }} {{ year }}</h4>
+        <div id="calendar-title">
+            <div>
+                <h4 class="day-calendar">{{ month }} {{ year }}</h4>
+            </div>
+            <div class="legend">
+                <fieldset>
+                    <legend>Legend:</legend>
+                    <ul class="legend-info">
+                        <li style="background-color: lightgreen">Group</li>
+                        <li style="background-color: hotpink">Area</li>
+                        <li style="background-color: lightskyblue">Event</li>
+                        <li style="background-color: orange">Project</li>
+                    </ul>
+                </fieldset>
+            </div>
         </div>
         <table id="calendar">
             <tr class="header-calendar">
@@ -32,7 +45,7 @@
                                     {% if group_dict|verify:weekday %}
                                         {% with group_list=group_dict|get_item:weekday %}
                                             {% for group in group_list %}
-                                                <li>
+                                                <li style="background-color: lightgreen">
                                                     <a href="#">{{ group.name }}</a>
                                                 </li>
                                             {% endfor %}
@@ -42,7 +55,7 @@
                                     {% if area_dict|verify:weekday %}
                                         {% with area_list=area_dict|get_item:weekday %}
                                             {% for area in area_list %}
-                                                <li>
+                                                <li style="background-color: hotpink">
                                                     <a href="#">{{ area.name }}</a>
                                                 </li>
                                             {% endfor %}
@@ -52,7 +65,7 @@
                                     {% if event_dict|verify:day %}
                                         {% with event_list=event_dict|get_item:day %}
                                             {% for event in event_list %}
-                                                <li>
+                                                <li style="background-color: lightskyblue">
                                                     <a href="#">{{ event.name }}</a>
                                                 </li>
                                             {% endfor %}
@@ -62,7 +75,7 @@
                                     {% if project_dict|verify:day %}
                                         {% with project_list=project_dict|get_item:day %}
                                             {% for project in project_list %}
-                                                <li>
+                                                <li style="background-color: orange">
                                                     <a href="#">{{ project.name }}</a>
                                                 </li>
                                             {% endfor %}
