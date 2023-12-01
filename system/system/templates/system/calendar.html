@@ -46,7 +46,7 @@
                                         {% with group_list=group_dict|get_item:weekday %}
                                             {% for group in group_list %}
                                                 <li style="background-color: lightgreen">
-                                                    <a href="#">{{ group.name }}</a>
+                                                    <a href="">{{ group.name }}</a>
                                                 </li>
                                             {% endfor %}
                                         {% endwith %}
@@ -56,7 +56,7 @@
                                         {% with area_list=area_dict|get_item:weekday %}
                                             {% for area in area_list %}
                                                 <li style="background-color: hotpink">
-                                                    <a href="#">{{ area.name }}</a>
+                                                    <a href="">{{ area.name }}</a>
                                                 </li>
                                             {% endfor %}
                                         {% endwith %}
@@ -66,7 +66,7 @@
                                         {% with event_list=event_dict|get_item:day %}
                                             {% for event in event_list %}
                                                 <li style="background-color: lightskyblue">
-                                                    <a href="#">{{ event.name }}</a>
+                                                    <a href="{% url 'display' event.id %}">{{ event.name }}</a>
                                                 </li>
                                             {% endfor %}
                                         {% endwith %}
@@ -76,7 +76,7 @@
                                         {% with project_list=project_dict|get_item:day %}
                                             {% for project in project_list %}
                                                 <li style="background-color: orange">
-                                                    <a href="#">{{ project.name }}</a>
+                                                    <a href="{% url 'display' project.id %}">{{ project.name }}</a>
                                                 </li>
                                             {% endfor %}
                                         {% endwith %}

@@ -24,6 +24,24 @@ def index(request):
     })
 
 @login_required(login_url="login")
+def display(request, id):
+    if Project.objects.filter(pk=id).exists():
+        project = Project.objects.get(pk=id)
+        print(project.name)
+        return render(request, "system/display.html", {
+            "info": project
+        })
+    elif Event.objects.filter(pk=id).exists():
+        event = Event.objects.get(pk=id)
+        return render(request, "system/display.html", {
+            "info": event
+        })
+    else:
+        return render(request, "system/display.html", {
+            "message": "Couldn't find this data."
+        })
+
+@login_required(login_url="login")
 def search(request):
     search = request.GET.get("q")
     if search:

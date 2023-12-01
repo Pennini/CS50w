@@ -35,11 +35,15 @@ legend {
 .legend {
     width: 30%;
 }
+#des-show {
+    border: 1px solid #303030;
+    padding: 10px;
+    margin-top: 10px;
+}
 #bio-show {
     border: 1px solid #303030;
     padding: 10px;
     margin-top: 10px;
-    background-color: ;
 }
 li {
     list-style-type: none;

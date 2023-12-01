@@ -9,7 +9,7 @@
             <ul class="list-group">
                 {% if projects %}
                     {% for project in projects %}
-                        <li class="list-group-item"><a href="#">{{ project.name }}<a></li>
+                        <li class="list-group-item"><a href="{% url 'display' project.id %}">{{ project.name }}<a></li>
                     {% endfor %}
                 {% else %}
                     <li class="list-group-item">No projects found</li>
@@ -22,7 +22,7 @@
             <ul class="list-group">
                 {% if events %}
                     {% for event in events %}
-                        <li class="list-group-item"><a href="#">{{ event.name }}<a></li>
+                        <li class="list-group-item"><a href="{% url 'display' event.id %}">{{ event.name }}<a></li>
                     {% endfor %}
                 {% else %}
                     <li class="list-group-item">No events found</li>
@@ -35,7 +35,7 @@
             <ul class="list-group">
                 {% if users %}
                     {% for user in users %}
-                        <li class="list-group-item"><a href="#">{{ user.username }}<a></li>
+                        <li class="list-group-item"><a href="">{{ user.username }}<a></li>
                     {% endfor %}
                 {% else %}
                     <li class="list-group-item">No users found</li>

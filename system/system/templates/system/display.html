@@ -1,0 +1,118 @@
+{% extends "system/layout.html" %}
+{% load custom_tags %}
+
+{% block body %}
+
+    <div>
+        {% if message %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="information">
+                <h4>{{ info.name }}</h4>
+                <br>
+                {% if info.area %}
+                    <span>
+                        <strong>Area:</strong> {{ info.area }}
+                    </span>
+                {% elif info.group %}
+                    <span>
+                        <strong>Group:</strong> {{ info.group }}
+                    </span>
+                {% endif %}
+                {% if info.responsible %}
+                    <span>
+                        <strong>Responsible:</strong> {{ info.responsible }}
+                    </span>
+                {% endif %}
+                {% if info.category %}
+                    <span>
+                        <strong>Category:</strong> {{ info.category }}
+                    </span>
+                {% endif %}
+                <div>
+                    {% if user.is_authenticated %}
+                            {% if info.description %}
+                                <div class="des-show" id="des-show">
+                                    <div>
+                                        <p id="content-des">{{ info.description }}</p>
+                                    </div>
+                            {% else %}
+                                <div class="des-show" id="des-show" style="display: none;">
+                                    <div>
+                                        <p id="content-des"></p>
+                                    </div>
+                            {% endif %}
+                            <div>
+                                <a href="" id="button-des-edit">Edit</a>
+                            </div>
+                        </div>
+                        {% if info.description %}
+                            <div class="des-edit" id="des-form" style="display: none;">
+                                <form id="form-compose-des" data-intention="edit" class="compose-edit">
+                        {% else %}
+                            <div class="des-edit" id="des-form">
+                                <form id="form-compose-des" data-intention="create" class="compose-edit">
+                        {% endif %}
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {% if info.description %}
+                                        <textarea name="content" maxlength="300" id="content-des-compose" class="form-control">{{ info.description }}</textarea>
+                                    {% else %}
+                                        <textarea name="content" maxlength="300" id="content-des-compose" class="form-control" placeholder="Say something about you"></textarea>
+                                    {% endif %}
+                                </div>
+                                <div id="error" class="error" style="display: none; margin-bottom: 10px;"></div>
+                                <input type="submit" class="btn btn-primary" value="Save"></input>
+                            </form>
+                        </div>
+                    {% endif %}
+                    <div style="margin-top: 15px;">
+                        {% if info.start_day %}
+                            <span>
+                                <strong>Started:</strong> {{ info.start_day|date:"d/m/Y" }}
+                            </span>
+                        {% endif %}
+                        {% if info.end_day %}
+                            <span>
+                                <strong>Finished:</strong> {{ info.end_day|date:"d/m/Y" }}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-7" id="projects-views">
+                    <h4>Organization:</h4>
+                    <br>
+                    <ul class="list-group">
+                        {% if info.members_planned %}
+                            {% for member in info.members_planned|get_all %}
+                                <li class="list-group-item"><a href="">{{ member.username }}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="list-group-item">No members found</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <div class="score">
+                        <h4>Members Present:</h4>
+                        <br>
+                        <ul class="list-group">
+                            {% if info.members_present %}
+                                {% for member in info.members_present|get_all %}
+                                    <li class="list-group-item"><a href="">{{ member.username }}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item">No members found</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock body %}

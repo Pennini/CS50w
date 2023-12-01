@@ -20,3 +20,7 @@ def verify_item_dict(dictionary, key):
         return dictionary.get(key)
     else:
         return None
+    
+@register.filter
+def get_all(manytomany):
+    return manytomany.all()
