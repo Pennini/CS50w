@@ -23,18 +23,40 @@ def index(request):
         "events": events
     })
 
+@csrf_exempt
 @login_required(login_url="login")
 def display(request, id):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        text = data.get("text")
+        typeinfo = data.get("type")
+
+        if not text or text == "":
+            return JsonResponse({"message": "Text cannot be empty."})
+        
+        if typeinfo == "project":
+            project = Project.objects.get(pk=id)
+            project.description = text
+            project.save()
+            return JsonResponse({"message": "You have updated the description of this project."})
+        elif typeinfo == "event":
+            event = Event.objects.get(pk=id)
+            event.members_planned.add(request.user)
+            event.save()
+            return JsonResponse({"message": "You have updated the description of this event."})
+        else:
+            return JsonResponse({"message": "Invalid type."})
     if Project.objects.filter(pk=id).exists():
         project = Project.objects.get(pk=id)
-        print(project.name)
         return render(request, "system/display.html", {
-            "info": project
+            "info": project,
+            "type": "project"
         })
     elif Event.objects.filter(pk=id).exists():
         event = Event.objects.get(pk=id)
         return render(request, "system/display.html", {
-            "info": event
+            "info": event,
+            "type": "event"
         })
     else:
         return render(request, "system/display.html", {
@@ -96,7 +118,6 @@ def availability(request):
         start = data.get("start")
         end = data.get("end")
 
-        print(day, start, end)
 
         if not day or not start or not end:
             return JsonResponse({"message": "Please fill all the fields."})
@@ -119,18 +140,14 @@ def availability(request):
         if start >= end:
             return JsonResponse({"message": "The ending time must be after the starting time."})
         
-        print(day, start, end)
-        
         if Availabilty.objects.filter(user=request.user, day=day, start_time=start, end_time=end).exists():
             availability = Availabilty.objects.get(user=request.user, day=day, start_time=start, end_time=end)
             availability.status = 0 if availability.status == 2 else availability.status + 1
-            print(f"Status: {availability.status}")
             availability.save()
             return JsonResponse({"message": "You succesfully updated availability for this day.", "status": availability.status})
         else:
             availability = Availabilty.objects.create(user=request.user, day=day, start_time=start, end_time=end)
             availability.status = 0
-            print(f"Status: {availability.status}")
             availability.save()
             return JsonResponse({"message": "Availability saved.", "status": availability.status})
     else:

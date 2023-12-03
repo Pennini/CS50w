@@ -23,6 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (document.querySelector('#form-compose-des')) {
+        document.querySelector('#form-compose-des').addEventListener('submit', (event) => {
+            event.preventDefault();
+            changeDes();
+        });
+    }
+    if (document.querySelector("#button-des-edit")) {
+        document.querySelector("#button-des-edit").addEventListener('click', (event) => {
+            event.preventDefault();
+            document.querySelector('#des-show').style.display = 'none';
+            document.querySelector('#des-form').style.display = 'block';
+        });
+    }
+
 });
 
 function alterAvailability(element) {
@@ -51,6 +65,51 @@ function alterAvailability(element) {
       .catch(error => {
           console.log('Error:', error);
       });
+}
+
+function changeDes() {
+    const content = document.querySelector('#content-des-compose');
+    const text = content.value;
+    const type = content.dataset.type;
+    const id = content.dataset.id;
+    let error_message = document.querySelector("#error");
+    if (!text.trim()) {
+        console.log('Error: No text to post');
+        error_message.style.display = 'block';
+        error_message.innerHTML = 'No text to post';
+        setTimeout(() => {
+            error_message.style.display = 'none';
+        }, 3000);
+        return;
+    } else if (text.length > 300) {
+        console.log('Error: Text too long');
+        error_message.style.display = 'block';
+        error_message.innerHTML = 'Text too long';
+        setTimeout(() => {
+            error_message.style.display = 'none';
+        }, 3000);
+        return;
+    } else {
+        fetch(`/display/${id}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                text: text,
+                type: type
+            })
+          })
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+            document.querySelector('#des-form').style.display = 'none';
+
+            document.querySelector('#content-des').innerHTML = text;
+            document.querySelector('#des-show').style.display = 'block';
+
+          })
+          .catch(error => {
+              console.log('Error:', error);
+          });
+    }
 }
 
 function changeBio() {

@@ -58,9 +58,9 @@
                                 {% csrf_token %}
                                 <div class="form-group">
                                     {% if info.description %}
-                                        <textarea name="content" maxlength="300" id="content-des-compose" class="form-control">{{ info.description }}</textarea>
+                                        <textarea name="content" maxlength="300" id="content-des-compose" class="form-control" data-type="{{ type }}" data-id="{{ info.id }}">{{ info.description }}</textarea>
                                     {% else %}
-                                        <textarea name="content" maxlength="300" id="content-des-compose" class="form-control" placeholder="Say something about you"></textarea>
+                                        <textarea name="content" maxlength="300" id="content-des-compose" class="form-control" placeholder="Say something about you" data-type="{{ type }}" data-id="{{ info.id }}"></textarea>
                                     {% endif %}
                                 </div>
                                 <div id="error" class="error" style="display: none; margin-bottom: 10px;"></div>
@@ -83,7 +83,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-7" id="projects-views">
+                {% if info.members_present %}
+                    <div class="col-sm-7" id="projects-views">
+                {% else %}
+                    <div class="col-sm-7" id="projects-views" style="margin-right: auto; margin-left: auto;">
+                {% endif %}
                     <h4>Organization:</h4>
                     <br>
                     <ul class="list-group">
@@ -91,26 +95,32 @@
                             {% for member in info.members_planned|get_all %}
                                 <li class="list-group-item"><a href="">{{ member.username }}</a></li>
                             {% endfor %}
+                        {% elif info.members %}
+                            {% for member in info.members|get_all %}
+                                <li class="list-group-item"><a href="">{{ member.username }}</a></li>
+                            {% endfor %}
                         {% else %}
-                            <li class="list-group-item">No members found</li>
+                        <li class="list-group-item"><a href="">No members found</a></li>
                         {% endif %}
                     </ul>
                 </div>
-                <div class="col-sm-4">
-                    <div class="score">
-                        <h4>Members Present:</h4>
-                        <br>
-                        <ul class="list-group">
-                            {% if info.members_present %}
-                                {% for member in info.members_present|get_all %}
-                                    <li class="list-group-item"><a href="">{{ member.username }}</a></li>
-                                {% endfor %}
-                            {% else %}
-                                <li class="list-group-item">No members found</li>
-                            {% endif %}
-                        </ul>
+                {% if info.members_present %}
+                    <div class="col-sm-4">
+                        <div class="score">
+                            <h4>Members Present:</h4>
+                            <br>
+                            <ul class="list-group">
+                                {% if info.members_present %}
+                                    {% for member in info.members_present|get_all %}
+                                        <li class="list-group-item"><a href="">{{ member.username }}</a></li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li class="list-group-item">No members found</li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
         {% endif %}
     </div>

@@ -1,5 +1,10 @@
 body {
     font-family: 'Roboto' sans-serif;
+    height: 100%;
+}
+html {
+    min-height: 100%;
+    position: relative;
 }
 #search-container {
     display: flex;
@@ -28,36 +33,36 @@ fieldset {
     justify-content: space-between;
 }
 legend {
-    background-color: gray;
-    color: white;
+    background-color: #C5B829;
+    color: #212529;
     padding: 5px 10px;
 }
 .legend {
     width: 30%;
 }
 #des-show {
-    border: 1px solid #303030;
+    border: 1px solid white;
     padding: 10px;
     margin-top: 10px;
 }
 #bio-show {
-    border: 1px solid #303030;
+    border: 1px solid white;
     padding: 10px;
     margin-top: 10px;
 }
 li {
     list-style-type: none;
     word-wrap: break-word;
-    border: 1px solid #303030;
+    border: 1px solid white;
     text-align: center;
     border-radius: 10px;
 }
 li a {
-    color: #303030;
+    color: white;
     text-decoration: none;
 }
 li a:hover {
-    color: white;
+    color: #F7E607;
     text-decoration: none;
 }
 .members-check {
@@ -67,7 +72,7 @@ li a:hover {
 }
 #member-table {
     margin-top: 5px;
-    border: 1px solid #303030;
+    border: 1px solid white;
     border-radius: 15px;
     padding: 20px;
 }
@@ -77,9 +82,10 @@ li a:hover {
     margin-left: auto;
     margin-right: auto;
     max-width: 75%;
-    border: 1px solid #303030;
+    border: 1px solid white;
     border-radius: 15px;
     padding: 20px;
+    color: white;
 }
 #form-div input[type=submit] {
     margin-top: 20px;
@@ -87,6 +93,7 @@ li a:hover {
 .day-calendar {
     margin-top: 30px;
     margin-bottom: 10px;
+    color: white;
 }
 #calendar, #calendar-ava {
     margin: 0 auto;
@@ -95,41 +102,51 @@ li a:hover {
     width: 100%;
 }
 #calendar td, #calendar th, #calendar-ava td, #calendar-ava th {
-    border: 1px solid #303030;
+    border: 1px solid black;
     padding: 8px;
+    background-color: gainsboro;
 }
 #calendar-ava td {
     background-color: white;
 }
 
+.list-calendar-info {
+    color: #212529;
+}
+.list-calendar-info:hover {
+    color: #eeeeee;
+}
+
 #calendar tr:nth-child(even){background-color: #f2f2f2;}
 
-#calendar td:hover {background-color: gray;}
+#calendar td:hover {background-color: darkgray;}
 
 #calendar th, #calendar-ava th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: dimgray;
-    color: white;
+    background-color: #C5B829;
+    color: #212529;
 }
 .header-calendar, .header-calendar-ava {
     text-align: center;
     margin-bottom: 20px;
-    border: 1px solid #303030;
+    border: 1px solid black;
 }
 #projects-views {
-    border: 1px solid #303030;
+    border: 1px solid white;
     border-radius: 15px;
     padding: 15px;
     margin-left: 20px;
     margin-right: 20px;
+    color: white;
 }
 #events-views {
-    border: 1px solid #303030;
+    border: 1px solid white;
     border-radius: 15px;
     padding: 15px;
     margin-right: 20px;
+    color: white;
 }
 .information {
     text-align: center;
@@ -137,21 +154,26 @@ li a:hover {
     margin-left: auto;
     margin-right: auto;
     font-size: 15px;
-    border: 1px solid #303030;
+    border: 1px solid white;
     padding: 15px;
     border-radius: 15px;
     margin-bottom: 20px;
+    color: white;
+}
+.information strong {
+    color: #C5B829;
 }
 .list-group-item {
-    background-color: gainsboro;
+    background-color: #414141;
 }
 .score {
     text-align: center;
     max-width: 250px;
     font-size: 15px;
-    border: 1px solid #303030;
+    border: 1px solid white;
     padding: 15px;
     border-radius: 15px;
+    color: white;
 }
 .information span {
     margin-right: 5px;
@@ -185,7 +207,7 @@ li a:hover {
 }
 .main {
     padding: 10px;
-    background-color: gainsboro;
+    background-color: #414141;
 }
 .search {
     width: 100%;
@@ -193,13 +215,13 @@ li a:hover {
     line-height: 15px;
 }
 .sidebar {
-    background-color: darkgray;
-    height: 100vh;
+    background-color: #212529;
+    height: 105vh;
     padding: 20px;
     text-align: center;
 }
 .sidebar a {
-    color: #303030;
+    color: white;
     text-decoration: none;
     font-size: 20px;
 }
@@ -208,4 +230,11 @@ li a:hover {
 }
 .sidebar div {
     margin-top: 20px;
+}
+label #btn,
+label #cancel {
+    cursor: pointer;
+    font-size: 25px;
+    color: white;
+    float: right;
 }
