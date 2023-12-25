@@ -106,7 +106,8 @@ Ensure that you have Python and Django installed on your system before running t
 
 For administrative purposes, superuser credentials can be created using the following command:
 
-```python manage.py createsuperuser
+```
+python manage.py createsuperuser
 ```
 
 The application emphasizes user-friendly interfaces, ensuring that individuals at all levels within the organization can navigate and utilize its features effectively.

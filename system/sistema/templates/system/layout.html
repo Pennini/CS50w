@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,6 +62,11 @@
                             <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
                             <li><a class="dropdown-item" href="{% url 'calendar' %}">Calendar</a></li>
                             <li><a class="dropdown-item" href="{% url 'availability' %}">Availability</a></li>
+                            {% with position_bool=user.position|get_list %}
+                                {% if position_bool  %}
+                                    <li><a class="dropdown-item" href="{% url 'meeting' %}">Meeting</a></li>
+                                {% endif %}
+                            {% endwith %}
                             {% if user.is_staff %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'create_view' 'user' %}">Create User</a></li>
@@ -135,12 +141,16 @@
                                     <span class="text nav-text">Availability</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="{% url 'meeting' %}">
-                                    <i class="bi bi-alarm"></i>
-                                    <span class="text nav-text">Meeting</span>
-                                </a>
-                            </li>
+                            {% with position_bool=user.position|get_list %}
+                                {% if position_bool  %}
+                                    <li>
+                                        <a href="{% url 'meeting' %}">
+                                            <i class="bi bi-alarm"></i>
+                                            <span class="text nav-text">Meeting</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endwith %}
                             {% if user.is_staff %}
                                 <li>
                                     <a href="{% url 'create_view' 'user' %}">

@@ -25,8 +25,8 @@ def index(request):
 
 @login_required(login_url="login")
 def meeting(request):
-    position_list = list(Position.objects.all().values("name"))
-    if request.user.position in position_list:
+    position_list = ["director", "leader", "vice-president", "president"]
+    if str(request.user.position) not in position_list:
         return render(request, "system/meeting.html", {
             "message": "You are not allowed to access this page."
         })
@@ -36,7 +36,6 @@ def meeting(request):
         return render(request, "system/meeting.html", {
             "group_list": groups,
             "area_list": areas,
-            "position_list": position_list
         })
     
 @csrf_exempt

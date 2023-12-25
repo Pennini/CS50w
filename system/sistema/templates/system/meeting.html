@@ -24,7 +24,7 @@
             <p>404</p>
             <p>{{ message }}</p> 
         </div>
-    {% elif user.position|verify_into_list:position_list %}
+    {% elif not user.position|get_list %}
         <div>
             <p>404</p>
             <p>You are not allowed</p> 

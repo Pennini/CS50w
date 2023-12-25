@@ -1,5 +1,7 @@
 from django import template
 
+from sistema.models import Position
+
 register = template.Library()
 
 @register.filter
@@ -45,5 +47,6 @@ def verify_events(dictionary, keyweek, keyday):
     return count
 
 @register.filter
-def verify_into_list(position, list):
-    return position in list
+def get_list(key):
+    positions = ["director", "leader", "vice-president", "president"]
+    return str(key) in positions
