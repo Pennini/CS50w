@@ -1,0 +1,79 @@
+{% extends "system/layout.html" %}
+{% load custom_tags %}
+
+{% block script %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const input = document.querySelector('#inputGroupFile02');
+            const label = document.querySelector('#label-file');
+
+            input.addEventListener('change', function() {
+                if (input.files.length > 0) {
+                    label.textContent = input.files[0].name;
+                } else {
+                    label.textContent = 'Choose a Meeting Report';
+                }
+            });
+        });
+    </script>
+{% endblock script %}
+
+{% block body %}
+    {% if message %}
+        <div>
+            <p>404</p>
+            <p>{{ message }}</p> 
+        </div>
+    {% elif user.position|verify_into_list:position_list %}
+        <div>
+            <p>404</p>
+            <p>You are not allowed</p> 
+        </div>
+    {% else %}
+        <div class="meeting-block">
+            <div style="margin: 15px auto; display: none;" id="message-success"></div>
+            <div class="input-group meeting-header">
+                <select class="form-select" name="meeting-select" id="meeting-select">
+                    <option value="0" selected>Select a option</option>
+                    {% if group_list %}
+                        {% for opt in group_list %}
+                            <option value="{{ opt.id }}" data-type="group">{{ opt.name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                    {% if area_list %}
+                        {% for opt in area_list %}
+                            <option value="{{ opt.id }}" data-type="area">{{ opt.name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            <div class="meeting-content">
+                <div class="meeting-archive" style="display: none;">
+                    <form id="forms-file" enctype="multipart/form-data">
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="report" id="inputGroupFile02" name="archive">
+                            <label class="custom-file-label" id="label-file" for="inputGroupFile02">Choose a Meeting Report</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="counter">
+                    00:00:00
+                </div>
+                <div class="mb-3 row" id="meeting-member" style="display: none;">
+                    <h6 class="col-sm-2 col-form-label" style="margin: 0px auto;">Members Present</h6>
+                    <hr>
+                    <div class="meeting-members col-sm-10" id="members">
+                    </div>
+                </div>
+                <div class="meeting-start-button">
+                    <button class="btn btn-primary" id="start-meeting" disabled>Start</button>
+                </div>
+                <div class="meeting-buttons">
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock body %}

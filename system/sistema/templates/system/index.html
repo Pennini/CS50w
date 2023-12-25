@@ -1,0 +1,52 @@
+{% extends "system/layout.html" %}
+
+
+{% block style %}
+
+    <style>
+
+        @media screen and (max-width: 900px) {
+            #index-events-views {
+                margin-top: 50px;
+            }
+            .index-views {
+                display: block;
+            }
+        }
+
+    </style>
+
+{% endblock style %}
+
+{% block body %}
+
+    <div class="index-views">
+        <div class="index-listing" id="index-projects-views">
+            <h4>Projects:</h4>
+            <br>
+            <ul class="list-group">
+                {% if projects %}
+                    {% for project in projects %}
+                        <li class="list-group-item"><a href="{% url 'display' id=project.id type_info='project' %}">{{ project }}<a></li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">No projects</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="index-listing" id="index-events-views">
+            <h4>Events:</h4>
+            <br>
+            <ul class="list-group">
+                {% if events %}
+                    {% for event in events %}
+                        <li class="list-group-item"><a href="{% url 'display' id=event.id type_info='event' %}">{{ event }}<a></li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">No events</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock body %}

@@ -1,0 +1,220 @@
+{% extends "system/layout.html" %}
+{% load custom_tags %}
+
+{% block body %}
+
+    <div>
+        <div>
+            <h4 class="day-calendar">Availability</h4>
+        </div>
+        <div id="div-table">
+            <table id="calendar-ava">
+                <tr class="header-calendar-ava">
+                    <th></th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                    <th>Sun</th>
+                </tr>
+                {% for hour_tuple, hour_week_dict in hour_choices.items %}
+                    <tr>
+                        <td class="hour-td">{{ hour_tuple.0 }} - {{ hour_tuple.1 }}</td>
+                        {% with status=hour_week_dict|get_item:0 %}
+                            {% if status == 0 %}
+                                <td class="day-hour" style="background-color: red;"
+                                    data-day="0" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 1 %}
+                                <td class="day-hour" style="background-color: yellow;"
+                                    data-day="0" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 2 %}
+                                <td class="day-hour" style="background-color: green;"
+                                    data-day="0" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% else %}
+                                <td class="day-hour"
+                                    data-day="0" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% endif %}
+                        {% endwith %}
+                        {% with status=hour_week_dict|get_item:1 %}
+                            {% if status == 0 %}
+                                <td class="day-hour" style="background-color: red;"
+                                    data-day="1" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 1 %}
+                                <td class="day-hour" style="background-color: yellow;"
+                                    data-day="1" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 2 %}
+                                <td class="day-hour" style="background-color: green;"
+                                    data-day="1" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% else %}
+                                <td class="day-hour"
+                                    data-day="1" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% endif %}
+                        {% endwith %}
+                        {% with status=hour_week_dict|get_item:2 %}
+                            {% if status == 0 %}
+                                <td class="day-hour" style="background-color: red;"
+                                    data-day="2" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 1 %}
+                                <td class="day-hour" style="background-color: yellow;"
+                                    data-day="2" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 2 %}
+                                <td class="day-hour" style="background-color: green;"
+                                    data-day="2" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% else %}
+                                <td class="day-hour"
+                                    data-day="2" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% endif %}
+                        {% endwith %}
+                        {% with status=hour_week_dict|get_item:3 %}
+                            {% if status == 0 %}
+                                <td class="day-hour" style="background-color: red;"
+                                    data-day="3" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 1 %}
+                                <td class="day-hour" style="background-color: yellow;"
+                                    data-day="3" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 2 %}
+                                <td class="day-hour" style="background-color: green;"
+                                    data-day="3" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% else %}
+                                <td class="day-hour"
+                                    data-day="3" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% endif %}
+                        {% endwith %}
+                        {% with status=hour_week_dict|get_item:4 %}
+                            {% if status == 0 %}
+                                <td class="day-hour" style="background-color: red;"
+                                    data-day="4" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 1 %}
+                                <td class="day-hour" style="background-color: yellow;"
+                                    data-day="4" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 2 %}
+                                <td class="day-hour" style="background-color: green;"
+                                    data-day="4" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% else %}
+                                <td class="day-hour"
+                                    data-day="4" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% endif %}
+                        {% endwith %}
+                        {% with status=hour_week_dict|get_item:5 %}
+                            {% if status == 0 %}
+                                <td class="day-hour" style="background-color: red;"
+                                    data-day="5" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 1 %}
+                                <td class="day-hour" style="background-color: yellow;"
+                                    data-day="5" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 2 %}
+                                <td class="day-hour" style="background-color: green;"
+                                    data-day="5" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% else %}
+                                <td class="day-hour"
+                                    data-day="5" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% endif %}
+                        {% endwith %}
+                        {% with status=hour_week_dict|get_item:6 %}
+                            {% if status == 0 %}
+                                <td class="day-hour" style="background-color: red;"
+                                    data-day="6" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 1 %}
+                                <td class="day-hour" style="background-color: yellow;"
+                                    data-day="6" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% elif status == 2 %}
+                                <td class="day-hour" style="background-color: green;"
+                                    data-day="6" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% else %}
+                                <td class="day-hour"
+                                    data-day="6" 
+                                    data-start="{{ hour_tuple.0 }}" 
+                                    data-end="{{ hour_tuple.1 }}"
+                                    data-status="{{ status }}"></td>
+                            {% endif %}
+                        {% endwith %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock body %}
