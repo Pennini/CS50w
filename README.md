@@ -68,7 +68,7 @@ Unlike other projects such as network, Wikipedia clone, and e-commerce clones th
 #### Clone the repository to your local machine.
 
 ```
-git clone https://github.com/me50/Pennini/tree/web50/projects/2020/x/capstone
+git clone url_repo
 ```
 
 #### Navigate to the project directory.
